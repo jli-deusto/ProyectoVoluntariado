@@ -16,5 +16,6 @@
 #define MAX_CONTENIDO 500
 #define MAX_UBICACION 100
 #define FECHA 11
+#define MAX_RUTA 200
 
 #endif /* CONSTANTES_H_ */
