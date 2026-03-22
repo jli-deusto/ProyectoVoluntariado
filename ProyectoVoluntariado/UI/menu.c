@@ -40,7 +40,7 @@ void menu_principal() {
 	} while (opcion != 4);
 }
 
-menu_usuarios(){}
+void menu_usuarios(){}
 
-menu_actividades(){}
-menu_noticias(){}
+void menu_actividades(){}
+void menu_noticias(){}

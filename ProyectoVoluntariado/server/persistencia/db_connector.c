@@ -6,7 +6,7 @@
  */
 
 
-#include <sqlite3.h>
+#include "../../Libs/sqlite/sqlite3.h"
 #include <stdlib.h>
 #include <stdio.h>
 sqlite3 *db;

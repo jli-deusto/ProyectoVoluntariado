@@ -7,7 +7,7 @@
 
 #ifndef CONFIG_CONFIG_SISTEMA_H_
 #define CONFIG_CONFIG_SISTEMA_H_
-#include "shared/constantes.h"
+#include "../../shared/constantes.h"
 
 typedef struct {
 	char db_path[MAX_RUTA];
@@ -19,5 +19,7 @@ typedef struct {
 	int max_usuarios;
 	int max_actividades;
 } ConfigAdmin;
+
+int cargar_configuracion(const char *ruta, ConfigAdmin *config);
 
 #endif /* CONFIG_CONFIG_SISTEMA_H_ */

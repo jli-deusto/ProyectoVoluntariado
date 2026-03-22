@@ -10,7 +10,7 @@
 
 void menu_principal();
 void menu_usuarios();
-void manu_actividades();
+void menu_actividades();
 void menu_noticias();
 
 #endif /* MENU_H_ */
