@@ -11,16 +11,18 @@
 #include "guardar/admin_data_manager.h" // to open DB
 #include "ui/menu.h"
 #include "shared/constantes.h"
-// 1. read admin.conf
 
-//2. open data base
-
-// 3. create database if tables do not exist
-
-// 4. show the principal menu
-
+//// 1. read admin.conf
+//
+////2. open data base
+//
+//// 3. create database if tables do not exist
+//
+//// 4. show the principal menu
+//
 
 int main() {
+    printf("Arrancando programa...\n");
     menu_principal();
     return 0;
 }
