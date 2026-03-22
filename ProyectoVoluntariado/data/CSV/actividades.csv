@@ -1,0 +1,16 @@
+TITULO,MAX_PLAZAS,UBICACION,DESCRIPCION,HORA_INIT,HORA_FIN,TIPO,FECHA
+Limpieza Playa Sopelana,20,Playa de Sopelana,Recogida de residuos en la orilla,09:00,13:00,limpieza,2024-06-01
+Rescate Tortugas Zarautz,10,Playa de Zarautz,Monitoreo y rescate de nidos de tortugas,08:00,12:00,rescate,2024-06-05
+Limpieza Fondo Marino,15,Puerto de Bermeo,Buceo para recoger residuos del fondo marino,10:00,14:00,limpieza,2024-06-10
+Avistamiento Delfines,12,Costa de Getaria,Registro y seguimiento de delfines,07:00,11:00,observacion,2024-06-15
+Taller Educacion Ambiental,25,Centro Civico Bilbao,Taller sobre conservacion del oceano,16:00,19:00,educacion,2024-06-20
+Limpieza Playa Mundaka,20,Playa de Mundaka,Recogida de residuos plasticos,09:00,13:00,limpieza,2024-07-01
+Rescate Aves Marinas,8,Playa de Lekeitio,Atencion y rescate de aves marinas,08:00,14:00,rescate,2024-07-05
+Censo Fauna Marina,15,Bahia de Txingudi,Conteo y registro de especies marinas,09:00,13:00,observacion,2024-07-10
+Charla Contaminacion Marina,30,Universidad de Deusto,Charla sobre plasticos en el oceano,17:00,19:00,educacion,2024-07-15
+Limpieza Rio Nervion,20,Margen del Rio Nervion,Recogida de residuos en las orillas del rio,09:00,13:00,limpieza,2024-07-20
+Plantacion Posidonia,10,Playa de Ondarreta,Replantacion de praderas de posidonia,08:00,12:00,restauracion,2024-08-01
+Monitoreo Corales,8,Costa de Hondarribia,Seguimiento del estado de los corales,09:00,15:00,observacion,2024-08-05
+Limpieza Playa Orio,18,Playa de Orio,Recogida de residuos tras temporada alta,09:00,13:00,limpieza,2024-08-10
+Taller Reciclaje,20,Centro Civico Getxo,Taller practico de reciclaje marino,16:00,19:00,educacion,2024-08-15
+Rescate Focas,6,Puerto de Pasajes,Atencion a focas varadas en la costa,08:00,14:00,rescate,2024-08-20

@@ -1,0 +1,23 @@
+NOMBRE,TLF,MAIL,PW,ROL,ESTADO_CUENTA,FECHA_REG
+Carlos García,612345678,carlos@gmail.com,pass123,0,1,2024-01-15
+Ana López,623456789,ana@gmail.com,pass123,0,1,2024-01-20
+María Martínez,634567890,maria@gmail.com,pass123,0,1,2024-02-01
+Juan Pérez,645678901,juan@gmail.com,pass123,0,1,2024-02-10
+Laura Sánchez,656789012,laura@gmail.com,pass123,0,1,2024-02-15
+Pedro Rodríguez,667890123,pedro@gmail.com,pass123,0,1,2024-02-20
+Sofía Fernández,678901234,sofia@gmail.com,pass123,0,1,2024-03-01
+Diego Gómez,689012345,diego@gmail.com,pass123,0,1,2024-03-05
+Elena Torres,690123456,elena@gmail.com,pass123,0,1,2024-03-10
+Miguel Ruiz,601234567,miguel@gmail.com,pass123,0,1,2024-03-15
+Isabel Díaz,612345679,isabel@gmail.com,pass123,0,1,2024-03-20
+Roberto Moreno,623456780,roberto@gmail.com,pass123,0,0,2024-03-25
+Carmen Jiménez,634567891,carmen@gmail.com,pass123,0,1,2024-04-01
+Francisco Álvarez,645678902,francisco@gmail.com,pass123,0,1,2024-04-05
+Patricia Romero,656789013,patricia@gmail.com,pass123,0,1,2024-04-10
+Antonio Navarro,667890124,antonio@gmail.com,pass123,0,1,2024-04-15
+Lucía Domínguez,678901235,lucia@gmail.com,pass123,0,0,2024-04-20
+Manuel Gil,689012346,manuel@gmail.com,pass123,0,1,2024-04-25
+Rosa Serrano,690123457,rosa@gmail.com,pass123,0,1,2024-05-01
+Javier Molina,601234568,javier@gmail.com,pass123,0,1,2024-05-05
+Admin Principal,,admin@b2h.com,admin123,1,1,2024-01-01
+Admin Secundario,,admin2@b2h.com,admin123,1,1,2024-01-01
