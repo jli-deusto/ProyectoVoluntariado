@@ -7,7 +7,8 @@
 
 #ifndef CONFIG_CONFIG_SISTEMA_H_
 #define CONFIG_CONFIG_SISTEMA_H_
-#include "constantes.h"
+#include "shared/constantes.h"
+
 typedef struct {
 	char db_path[MAX_RUTA];
 	char log_path[MAX_RUTA];

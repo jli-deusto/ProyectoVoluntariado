@@ -8,6 +8,9 @@
 #ifndef MENU_H_
 #define MENU_H_
 
-
+void menu_principal();
+void menu_usuarios();
+void manu_actividades();
+void menu_noticias();
 
 #endif /* MENU_H_ */
