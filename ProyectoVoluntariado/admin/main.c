@@ -5,6 +5,11 @@
  *      Author: j.li
  */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include "config/config_sistema.h" // to read admin.conf
+#include "guardar/admin_data_manager.h" // to open DB
+
 // 1. read admin.conf
 
 //2. open data base
