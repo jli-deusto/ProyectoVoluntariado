@@ -49,10 +49,3 @@ void menu_principal() {
     } while (opcion != 4);
 }
 
-<<<<<<< HEAD
-void menu_usuarios(){}
-
-void menu_actividades(){}
-void menu_noticias(){}
-=======
->>>>>>> branch 'master' of https://github.com/jli-deusto/ProyectoVoluntariado.git
