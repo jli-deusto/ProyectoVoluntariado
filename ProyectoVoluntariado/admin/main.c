@@ -11,8 +11,6 @@
 #include "guardar/admin_data_manager.h" // to open DB
 #include "../UI/menu.h"
 #include "../shared/constantes.h"
-#include "ui/menu.h"
-#include "shared/constantes.h"
 
 int main(){
 	// 1. read admin.conf
@@ -35,7 +33,7 @@ int main(){
 //
 ////2. open data base
 //
-//// 3. create database if tables do not exist
+//// 3. create database if tables do not exist .
 //
 //// 4. show the principal menu
 //
