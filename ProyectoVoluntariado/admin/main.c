@@ -35,7 +35,7 @@ int main(){
 //
 //// 3. create database if tables do not exist .
 //
-//// 4. show the principal menu
+//// 4. show the principal menu.
 //
 
 	// 3. create database if tables do not exist
