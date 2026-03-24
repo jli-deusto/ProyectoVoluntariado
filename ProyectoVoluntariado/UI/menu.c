@@ -19,14 +19,15 @@ void menu_principal() {
     char buffer[10];
 
     do {
-        printf("\n================================\n");
+        printf("\n================================\n"); // puts lo mismo que printf pero sin formateado
         printf("    B2H - ADMINISTRADOR LOCAL   \n");
         printf("================================\n");
         printf("1. Gestionar usuarios\n");
         printf("2. Gestionar actividades\n");
         printf("3. Gestionar noticias\n");
         printf("4. Salir\n");
-        printf("Selecciona una opcion: ");
+        printf("Selecciona una opcion: \n");
+        fflush(stdout); // desatasca el fichero de salida - esto indica que la lectura antes de imprimir ir over
         fgets(buffer, sizeof(buffer), stdin);
         sscanf(buffer, "%d", &opcion);
 
