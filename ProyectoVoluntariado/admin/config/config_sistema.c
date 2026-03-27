@@ -58,5 +58,5 @@ int cargar_configuracion(const char *ruta, ConfigAdmin *config){
 	fclose(f);
 
 	return 1;
-
+	//...
 }

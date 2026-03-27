@@ -12,7 +12,7 @@
 #include "../UI/menu.h"
 #include "../shared/constantes.h"
 
-int main(){
+int main_admin(){
 	// 1. read admin.conf
 	ConfigAdmin config;
 

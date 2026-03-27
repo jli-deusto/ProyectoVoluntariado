@@ -8,6 +8,9 @@
 #ifndef PERSISTENCIA_DB_CONNECTOR_H_
 #define PERSISTENCIA_DB_CONNECTOR_H_
 
+#include "../../Libs/sqlite/sqlite3.h"
+extern sqlite3 *db;
+
 void ejecutar_sqlExec(sqlite3 *db, const char *sql);
 void open_connection();
 void prepare_Statements();

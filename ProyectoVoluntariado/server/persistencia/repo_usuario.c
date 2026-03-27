@@ -5,4 +5,29 @@
  *      Author: j.li
  */
 
+#include "../../Libs/sqlite/sqlite3.h"
+#include "repo_usuario.h"
+#include "../modelo/modelo_user.h"
+#include <stdio.h>
 
+void repo_usuario_insert(sqlite3 *db, Usuario *u) {
+
+	sqlite3_stmt *stmt;
+
+    const char *sql =
+        "INSERT INTO USUARIO (NOMBRE, TLF, MAIL, PW, ROL, ESTADO_CUENTA, FECHA_REG) "
+        "VALUES (?, ?, ?, ?, ?, ?, ?);";
+
+    sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+
+    sqlite3_bind_text(stmt, 1, u->nombre, -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, u->tlf, -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 3, u->mail, -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 4, u->pw, -1, SQLITE_STATIC);
+    sqlite3_bind_int(stmt, 5, u->rol);
+    sqlite3_bind_int(stmt, 6, u->estado_cuenta);
+    sqlite3_bind_text(stmt, 7, u->fecha_reg, -1, SQLITE_STATIC);
+
+    sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
+}
