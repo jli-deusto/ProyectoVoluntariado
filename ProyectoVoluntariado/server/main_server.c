@@ -37,7 +37,7 @@ int main_server() {
         db_cargar_datos_iniciales(db);
         printf("Carga de base de datos completado.\n");
     } else {
-        printf("Base de datos ya cargada.\n");
+        printf("Base de datos ya cargada anteriormente.\n");
     }
 
     debug_contadores(db);

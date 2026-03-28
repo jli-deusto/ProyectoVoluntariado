@@ -19,7 +19,10 @@
 
 //----------------------- CARGAR USUARIOS -----------------------
 void cargar_usuarios_csv(sqlite3 *db, const char *ruta) {
-    FILE *f = fopen(ruta, "r");
+	printf("Intentando abrir: %s\n", ruta);
+		fflush(stdout);
+
+	FILE *f = fopen(ruta, "r");
     if (!f) {
     	printf("No se pudo abrir %s\n", ruta);
     	fflush(stdout);
@@ -32,6 +35,7 @@ void cargar_usuarios_csv(sqlite3 *db, const char *ruta) {
 
     while (fgets(linea, sizeof(linea), f)) {
 
+
     	char *nombre = strtok(linea, ",");
         char *tlf = strtok(NULL, ",");
         char *mail = strtok(NULL, ",");
@@ -39,6 +43,16 @@ void cargar_usuarios_csv(sqlite3 *db, const char *ruta) {
         char *rol = strtok(NULL, ",");
         char *estado = strtok(NULL, ",");
         char *fecha = strtok(NULL, "\n");
+
+        if (!nombre || !tlf || !mail || !pw || !rol || !estado || !fecha) {
+            printf("ERROR: línea CSV mal formada: %s\n", linea);
+            continue;
+        }
+
+        for (int i = 0; linea[i]; i++) {
+            printf("%c (%d)\n", linea[i], linea[i]);
+        }
+
 
         Usuario u;
         strcpy(u.nombre, nombre);
@@ -51,6 +65,7 @@ void cargar_usuarios_csv(sqlite3 *db, const char *ruta) {
 
         repo_usuario_insert(db, &u);
     }
+    printf("usuarios.csv abierto y cargado");
 
     fclose(f);
 }
@@ -58,7 +73,10 @@ void cargar_usuarios_csv(sqlite3 *db, const char *ruta) {
 
 //----------------------- CARGAR ACTIVIDADES -----------------------
 void cargar_actividades_csv(sqlite3 *db, const char *ruta) {
-    FILE *f = fopen(ruta, "r");
+	printf("Intentando abrir: %s\n", ruta);
+	fflush(stdout);
+
+	FILE *f = fopen(ruta, "r");
     if (!f) {
         printf("No se pudo abrir %s\n", ruta);
         return;
@@ -90,7 +108,7 @@ void cargar_actividades_csv(sqlite3 *db, const char *ruta) {
 
         repo_actividad_insert(db, &a);
     }
-
+    printf("actividades.csv abierto y cargado");
     fclose(f);
 }
 
