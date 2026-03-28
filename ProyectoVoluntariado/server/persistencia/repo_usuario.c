@@ -21,7 +21,11 @@ void repo_usuario_insert(sqlite3 *db, Usuario *u) {
     sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
 
     sqlite3_bind_text(stmt, 1, u->nombre, -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 2, u->tlf, -1, SQLITE_STATIC);
+    if (u->tlf[0] == '\0'){
+    	sqlite3_bind_null(stmt, 2);
+    }else{
+    	sqlite3_bind_text(stmt, 2, u->tlf, -1, SQLITE_STATIC);
+    }
     sqlite3_bind_text(stmt, 3, u->mail, -1, SQLITE_STATIC);
     sqlite3_bind_text(stmt, 4, u->pw, -1, SQLITE_STATIC);
     sqlite3_bind_int(stmt, 5, u->rol);
