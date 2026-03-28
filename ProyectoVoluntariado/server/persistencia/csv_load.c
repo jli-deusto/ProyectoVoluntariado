@@ -19,8 +19,8 @@
 
 //----------------------- CARGAR USUARIOS -----------------------
 void cargar_usuarios_csv(sqlite3 *db, const char *ruta) {
-	printf("Intentando abrir: %s\n", ruta);
-		fflush(stdout);
+//	printf("Intentando abrir: %s\n", ruta);
+//	fflush(stdout);
 
 	FILE *f = fopen(ruta, "r");
     if (!f) {
@@ -49,11 +49,6 @@ void cargar_usuarios_csv(sqlite3 *db, const char *ruta) {
             continue;
         }
 
-        for (int i = 0; linea[i]; i++) {
-            printf("%c (%d)\n", linea[i], linea[i]);
-        }
-
-
         Usuario u;
         strcpy(u.nombre, nombre);
         strcpy(u.tlf, tlf);
@@ -65,7 +60,7 @@ void cargar_usuarios_csv(sqlite3 *db, const char *ruta) {
 
         repo_usuario_insert(db, &u);
     }
-    printf("usuarios.csv abierto y cargado");
+//    printf("usuarios.csv abierto y cargado");
 
     fclose(f);
 }
@@ -73,8 +68,8 @@ void cargar_usuarios_csv(sqlite3 *db, const char *ruta) {
 
 //----------------------- CARGAR ACTIVIDADES -----------------------
 void cargar_actividades_csv(sqlite3 *db, const char *ruta) {
-	printf("Intentando abrir: %s\n", ruta);
-	fflush(stdout);
+//	printf("Intentando abrir: %s\n", ruta);
+//	fflush(stdout);
 
 	FILE *f = fopen(ruta, "r");
     if (!f) {
@@ -108,7 +103,7 @@ void cargar_actividades_csv(sqlite3 *db, const char *ruta) {
 
         repo_actividad_insert(db, &a);
     }
-    printf("actividades.csv abierto y cargado");
+//    printf("actividades.csv abierto y cargado");
     fclose(f);
 }
 
