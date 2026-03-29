@@ -7,7 +7,7 @@
 
 #include <stdio.h>
 #include "menu.h"
-
+#include "shared/constantes.h"
 void menu_usuarios() {}
 
 void menu_actividades() {}
@@ -16,7 +16,7 @@ void menu_noticias() {}
 
 void menu_principal() {
     int opcion = -1;
-    char buffer[10];
+    char buffer[opt];
 
     do {
         printf("\n================================\n"); // puts lo mismo que printf pero sin formateado
@@ -26,7 +26,7 @@ void menu_principal() {
         printf("2. Gestionar actividades\n");
         printf("3. Gestionar noticias\n");
         printf("4. Salir\n");
-        printf("Selecciona una opcion: \n");
+        printf("Selecciona una opcion: ");
         fflush(stdout); // desatasca el fichero de salida - esto indica que la lectura antes de imprimir ir over
         fgets(buffer, sizeof(buffer), stdin);
         sscanf(buffer, "%d", &opcion);

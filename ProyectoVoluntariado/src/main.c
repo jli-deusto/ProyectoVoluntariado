@@ -7,14 +7,15 @@
 
 
 #include <stdio.h>
-
+#include "UI/logIn.h"
 int main_server();
 int main_admin();
 
 int main() {
     int opcion;
 
-    printf("------ Proyecto Voluntariado ------\n");
+    bienvenida();
+    inicio_sesion();
     printf("1. Ejecutar modo ADMIN\n");
     printf("2. Ejecutar modo SERVER\n");
     printf("Seleccione una opción: ");

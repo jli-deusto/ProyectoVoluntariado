@@ -14,6 +14,8 @@ typedef struct {
 	char log_path[MAX_RUTA];
 	char csv_usuarios[MAX_RUTA];
 	char csv_actividades[MAX_RUTA];
+	char csv_noticias[MAX_RUTA];
+	char csv_reservas[MAX_RUTA];
 	char admin_user[MAX_NOMBRE];
 	char admin_pass[MAX_PASSWORD];
 	int max_usuarios;

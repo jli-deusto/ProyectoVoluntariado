@@ -18,5 +18,6 @@
 #define FECHA 11
 #define MAX_RUTA 200
 #define HORA 6 // HH:MM
+#define opt 2 // 0 a 9 + \0
 
 #endif /* CONSTANTES_H_ */
