@@ -9,7 +9,7 @@
 #define PERSISTENCIA_REPO_RESERVA_H_
 
 #include "../../Libs/sqlite/sqlite3.h"
-#include "../modelo/modelo_reserva.h"
+#include "shared/modelo_reserva.h"
 
 void repo_reserva_insert(sqlite3 *db, Reserva *r);
 

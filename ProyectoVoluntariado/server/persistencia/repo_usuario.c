@@ -7,10 +7,10 @@
 
 #include "../../Libs/sqlite/sqlite3.h"
 #include "repo_usuario.h"
-#include "../modelo/modelo_user.h"
+#include "shared/modelo_user.h"
 #include <stdio.h>
 
-void repo_usuario_insert(sqlite3 *db, Usuario *u) {
+void repo_usuario_insert(sqlite3 *db, User *u) {
 
 	sqlite3_stmt *stmt;
 
@@ -32,6 +32,10 @@ void repo_usuario_insert(sqlite3 *db, Usuario *u) {
     sqlite3_bind_int(stmt, 6, u->estado_cuenta);
     sqlite3_bind_text(stmt, 7, u->fecha_reg, -1, SQLITE_STATIC);
 
-    sqlite3_step(stmt);
+    int rc = sqlite3_step(stmt);
+        if (rc != SQLITE_DONE) {
+            printf("Error SQL en insert: %s\n", sqlite3_errmsg(db));
+        }
+
     sqlite3_finalize(stmt);
 }

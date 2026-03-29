@@ -1,9 +1,3 @@
-/*
- * csv_load.c
- *
- *  Created on: 27 mar 2026
- *      Author: j.li
- */
 
 
 #include "csv_load.h"
@@ -19,6 +13,10 @@
 #include <limits.h>
 #include <unistd.h>
 
+#include "shared/modelo_noticia.h"
+#include "shared/modelo_reserva.h"
+#include "shared/modelo_actividad.h"
+#include "shared/modelo_user.h"
 
 
 //----------------------- CARGAR USUARIOS -----------------------
@@ -80,7 +78,7 @@ void cargar_usuarios_csv(sqlite3 *db, const char *ruta) {
     	    continue;
     	}
 
-        Usuario u;
+        User u;
         strcpy(u.nombre, nombre);
         strcpy(u.tlf, tlf);
         strcpy(u.mail, mail);
@@ -158,7 +156,7 @@ void cargar_reservas_csv(sqlite3 *db, const char *ruta) {
         char *id_actividad = strtok(NULL, "\n");
 
         Reserva r;
-        r.estado_reserva = atoi(estado);
+        r.estado = atoi(estado);
         strcpy(r.fecha, fecha);
         r.id_usuario = atoi(id_usuario);
         r.id_actividad = atoi(id_actividad);
@@ -190,8 +188,8 @@ void cargar_noticias_csv(sqlite3 *db, const char *ruta) {
 
         Noticia n;
         strcpy(n.titulo, titulo);
-        strcpy(n.descripcion, descripcion);
-        strcpy(n.fecha, fecha);
+        strcpy(n.contenido, descripcion);
+        strcpy(n.fecha_pub, fecha);
         n.id_usuario = atoi(id_usuario);
 
         repo_noticia_insert(db, &n);

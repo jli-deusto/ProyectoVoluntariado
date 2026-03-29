@@ -12,11 +12,12 @@
 typedef struct{
 	int id;
 	char mail[MAX_EMAIL];
-	char password[MAX_PASSWORD];
+	char pw[MAX_PASSWORD];
 	char nombre[MAX_NOMBRE];
-    char telefono[MAX_TELEFONO];
-    int  rol;           // 0 = voluntario, 1 = admin
-    int  estado_cuenta; // 0 = inactiva, 1 = activa
+    char tlf[MAX_TELEFONO];
+    int  rol;                // 0 = voluntario, 1 = admin
+    int  estado_cuenta;
+    char fecha_reg[FECHA];   // 0 = inactiva, 1 = activa
 } User;
 
 #endif /* MODELO_USER_H_ */

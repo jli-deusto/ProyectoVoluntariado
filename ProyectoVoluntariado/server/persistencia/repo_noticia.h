@@ -9,7 +9,7 @@
 #define PERSISTENCIA_REPO_NOTICIA_H_
 
 #include "../../Libs/sqlite/sqlite3.h"
-#include "../modelo/modelo_noticia.h"
+#include "shared/modelo_noticia.h"
 
 void repo_noticia_insert(sqlite3 *db, Noticia *n);
 

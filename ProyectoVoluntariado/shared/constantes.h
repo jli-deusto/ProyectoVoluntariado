@@ -17,5 +17,6 @@
 #define MAX_UBICACION 100
 #define FECHA 11
 #define MAX_RUTA 200
+#define HORA 6 // HH:MM
 
 #endif /* CONSTANTES_H_ */

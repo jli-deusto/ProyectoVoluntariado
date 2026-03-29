@@ -12,6 +12,7 @@ typedef struct {
 	char fecha_pub[FECHA];
 	char titulo[MAX_TITULO];
 	char contenido[MAX_CONTENIDO];
+	int id_usuario;
 	int id_noticia;
 } Noticia;
 

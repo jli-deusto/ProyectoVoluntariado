@@ -9,11 +9,11 @@
 #define MODELO_ACTIVIDAD_H_
 #include "constantes.h"
 typedef struct {
-	int hora_init; // minutes
-	int hora_fin; // minutes
+	char hora_init[HORA]; // HH:MM
+	char hora_fin[HORA]; // HH:MM
 	int max_plazas;
 	int id_actividad;
-
+	char titulo[MAX_TITULO];
 	char ubicacion[MAX_UBICACION];
 	char actividad[100];
 	char descripcion[MAX_CONTENIDO];

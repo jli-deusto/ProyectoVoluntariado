@@ -21,7 +21,7 @@ void ejecutar_sqlExec(sqlite3 *db, const char *sql) {
     } }
 
 void open_connection() {
-	if (sqlite3_open("server_data.db", &db) == SQLITE_OK) {
+	if (sqlite3_open("data/server_data.db", &db) == SQLITE_OK) {
 
 		ejecutar_sqlExec(db, "CREATE TABLE IF NOT EXISTS USUARIO ("
 			    "ID INTEGER PRIMARY KEY AUTOINCREMENT,"
