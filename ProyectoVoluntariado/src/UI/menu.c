@@ -33,13 +33,13 @@ void menu_admin() {
 
         switch(opcion) {
             case 1:
-                menu_usuarios();
+                gestion_usuarios();
                 break;
             case 2:
-                menu_actividades();
+                gestion_actividades();
                 break;
             case 3:
-                menu_noticias();
+                gestion_noticias();
                 break;
             case 4:
                 printf("Cerrando sesion...\n");
@@ -49,4 +49,20 @@ void menu_admin() {
         }
     } while (opcion != 4);
 }
+gestion_usuarios() {
+	// crear usuario
+	// modificar usuario
+	// eliminar usuario
+
+};
+gestion_actividades(){
+	// crear actividad
+	// modificar actividad
+	// eliminar actividad
+};
+gestion_noticias(){
+	// crear actividad
+	// modificar actividad
+	// eliminar actividad
+};
 
