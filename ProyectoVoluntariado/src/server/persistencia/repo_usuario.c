@@ -10,7 +10,7 @@
 #include "shared/modelo_user.h"
 #include <stdio.h>
 
-void repo_usuario_insert(sqlite3 *db, User *u) {
+int repo_usuario_insert(sqlite3 *db, User *u) {
 
 	sqlite3_stmt *stmt;
 
@@ -35,7 +35,19 @@ void repo_usuario_insert(sqlite3 *db, User *u) {
     int rc = sqlite3_step(stmt);
         if (rc != SQLITE_DONE) {
             printf("Error SQL en insert: %s\n", sqlite3_errmsg(db));
+            sqlite3_finalize(stmt);
+            return 0;
+        }
+
+    int changes = sqlite3_changes(db);
+    if (changes == 1) {
+            printf("Usuario insertado correctamente.\n");
+        } else {
+            printf("Advertencia: no se insertó ninguna fila.\n");
+            sqlite3_finalize(stmt);
+            return 0;
         }
 
     sqlite3_finalize(stmt);
+    return 1;
 }

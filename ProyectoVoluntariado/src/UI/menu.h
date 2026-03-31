@@ -13,4 +13,9 @@ void menu_admin();
 void menu_usuarios();
 void menu_actividades();
 void menu_noticias();
+
+void gestion_usuarios();
+void gestion_actividades();
+void gestion_noticias();
+
 #endif /* MENU_H_ */

@@ -11,6 +11,6 @@
 #include "Libs/sqlite/sqlite3.h"
 #include "shared/modelo_user.h"
 
-void repo_usuario_insert(sqlite3 *db, User *u);
+int repo_usuario_insert(sqlite3 *db, User *u);
 
 #endif /* PERSISTENCIA_REPO_USUARIO_H_ */

@@ -8,6 +8,8 @@
 #ifndef UI_USERMNG_H_
 #define UI_USERMNG_H_
 #include "shared/constantes.h"
+#include "shared/modelo_user.h"
+
 int crearUsuario();
 int modificarUsuario(User *usuario);
 int eliminarUsuario(User *usuario);

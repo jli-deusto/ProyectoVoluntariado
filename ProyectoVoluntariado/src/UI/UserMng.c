@@ -7,43 +7,40 @@
 
 
 #include <stdio.h>
+#include <time.h>
+#include <string.h>
 #include "UserMng.h"
 #include "shared/constantes.h"
 #include "shared/modelo_user.h"
-#include <time.h>
+#include "server/persistencia/repo_usuario.h"
+
+sqlite3 *db;
 
 // funciones repetidas
-void extraerNombre(char username[MAX_NOMBRE]){
-	char buffer_user[MAX_NOMBRE];
-	printf("Nombre Usuario: ");
-	fflush(stdout);
-	fgets(buffer_user, sizeof(buffer_user), stdin);
-	sscanf(buffer_user, "%s", username);
-};
-void extraerMail(char mail[MAX_EMAIL]){
-	char buffer_mail[MAX_NOMBRE];
-	printf("Mail: ");
-	fflush(stdout);
-	fgets(buffer_mail, sizeof(buffer_mail), stdin);
-	sscanf(buffer_mail, "%s", mail);
+void extraerCadena(const char *mensaje, char *dest, size_t tam) {
+    printf("%s", mensaje);
+    fflush(stdout);
 
-};
-void extraerTlf(char tlf[MAX_TELEFONO]){
-	char buffer_tlf[MAX_PASSWORD];
+    if (fgets(dest, tam, stdin)) {
+        dest[strcspn(dest, "\n")] = 0; // eliminar salto de línea
+    }
+}
 
-	printf("Telefono: ");
-	fflush(stdout);
-	fgets(buffer_tlf, sizeof(buffer_tlf), stdin);
-	sscanf(buffer_tlf, "%s", tlf);
-};
+void extraerNombre(char *username) {
+    extraerCadena("Nombre Usuario: ", username, MAX_NOMBRE);
+}
 
-void extraerClave(char clave[MAX_PASSWORD]){
-	char buffer_pwd[MAX_PASSWORD];
-	printf("Clave: ");
-	fflush(stdout);
-	fgets(buffer_pwd, sizeof(buffer_pwd), stdin);
-	sscanf(buffer_pwd, "%s", clave);
-};
+void extraerMail(char *mail) {
+    extraerCadena("Mail: ", mail, MAX_EMAIL);
+}
+
+void extraerTlf(char *tlf) {
+    extraerCadena("Telefono: ", tlf, MAX_TELEFONO);
+}
+
+void extraerClave(char *clave) {
+    extraerCadena("Clave: ", clave, MAX_PASSWORD);
+}
 
 
 int crearUsuario(){
@@ -56,12 +53,13 @@ int crearUsuario(){
 	char fecha[FECHA];
 	time_t t = time(NULL);
 	struct tm tm = *localtime(&t);
-	printf("=====Creando Nuevo Usuario ====");
+	printf("=====Creando Nuevo Usuario ====\n");
 
 	extraerMail(mail);
-	extraerTlf(clave);
+	extraerTlf(tlf);
 	extraerNombre(username);
-	extraerClave(mail);
+	extraerClave(clave);
+
 
 	printf("telefono: ");
 	fflush(stdout);
@@ -71,14 +69,20 @@ int crearUsuario(){
 
 	usuario.estado_cuenta = 1;
 	usuario.rol = 0;
-	usuario.fecha_reg = fecha;
-	usuario.mail = mail;
-	usuario.nombre = username;
-	usuario.pw = clave;
-	usuario.tlf = tlf;
+	strcpy(usuario.fecha_reg, fecha);
+	strcpy(usuario.nombre, username);
+	strcpy(usuario.pw, clave);
+	strcpy(usuario.tlf, tlf);
+	strcpy(usuario.mail, mail);
 
-
-	return 0;
+	// abrimos conexion con la bd
+	if (sqlite3_open("server_data.db", &db) != SQLITE_OK) {
+	    printf("No se pudo abrir la base de datos\n");
+	    return 0;
+	}
+	int sol = repo_usuario_insert(db, &usuario);
+	sqlite3_close(db);
+	return sol;
 };
 
 

@@ -43,8 +43,6 @@ void inicio_sesion() {
 	char buffer_user[MAX_NOMBRE];
 	char buffer_pwd[MAX_PASSWORD];
 	// desatascar buffr stdin
-	int c;
-	while ((c = getchar()) != '\n' && c != EOF);
 
 	printf("=================Iniciar Sesion=================\n");
 	printf("Usuario: ");
