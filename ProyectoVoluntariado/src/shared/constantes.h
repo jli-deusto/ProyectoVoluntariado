@@ -15,7 +15,7 @@
 #define MAX_TITULO 100
 #define MAX_CONTENIDO 500
 #define MAX_UBICACION 100
-#define FECHA 11
+#define FECHA 11 // %02d/%02d/%04d
 #define MAX_RUTA 200
 #define HORA 6 // HH:MM
 #define opt 2 // 0 a 9 + \0
