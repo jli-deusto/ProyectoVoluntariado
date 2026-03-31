@@ -7,7 +7,7 @@
 
 #include "../../Libs/sqlite/sqlite3.h"
 #include "repo_reserva.h"
-#include "src/shared/modelo_reserva.h"
+#include "shared/modelo_reserva.h"
 #include <stdio.h>
 
 void repo_reserva_insert(sqlite3 *db, Reserva *r) {

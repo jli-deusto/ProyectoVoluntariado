@@ -13,10 +13,10 @@
 #include <limits.h>
 #include <unistd.h>
 
-#include "src/shared/modelo_noticia.h"
-#include "src/shared/modelo_reserva.h"
-#include "src/shared/modelo_actividad.h"
-#include "src/shared/modelo_user.h"
+#include "shared/modelo_noticia.h"
+#include "shared/modelo_reserva.h"
+#include "shared/modelo_actividad.h"
+#include "shared/modelo_user.h"
 
 
 //----------------------- CARGAR USUARIOS -----------------------

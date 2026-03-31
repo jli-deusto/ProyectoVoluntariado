@@ -7,7 +7,7 @@
 
 #include "../../Libs/sqlite/sqlite3.h"
 #include "repo_actividad.h"
-#include "src/shared/modelo_actividad.h"
+#include "shared/modelo_actividad.h"
 #include <stdio.h>
 
 

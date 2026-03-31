@@ -30,8 +30,7 @@
 								<option defaultValue="gnu.c.optimization.level.none" id="gnu.c.compiler.mingw.exe.debug.option.optimization.level.276051083" name="Optimization level" superClass="gnu.c.compiler.mingw.exe.debug.option.optimization.level" useByScannerDiscovery="false" valueType="enumerated"/>
 								<option defaultValue="gnu.c.debugging.level.max" id="gnu.c.compiler.mingw.exe.debug.option.debugging.level.640862727" name="Debug level" superClass="gnu.c.compiler.mingw.exe.debug.option.debugging.level" useByScannerDiscovery="false" valueType="enumerated"/>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="gnu.c.compiler.option.include.paths.1858930703" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;C:\Users\danielavalentina.s\git\ProyectoVoluntariado\ProyectoVoluntariado&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:\Users\danielavalentina.s\git\ProyectoVoluntariado\ProyectoVoluntariado\Libs\sqlite&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Users\j.li\git\ProyectoVoluntariado\ProyectoVoluntariado\src&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.36874569" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
@@ -126,4 +125,5 @@
 			<resource resourceType="PROJECT" workspacePath="/ProyectoVoluntariado"/>
 		</configuration>
 	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 </cproject>
