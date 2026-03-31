@@ -14,7 +14,7 @@ void repo_noticia_insert(sqlite3 *db, Noticia *n) {
     sqlite3_stmt *stmt;
 
     const char *sql =
-        "INSERT INTO NOTICIA (TITULO, DESCRIPCION, FECHA, ID_USUARIO) "
+        "INSERT OR REPLACE INTO NOTICIA (TITULO, DESCRIPCION, FECHA, ID_USUARIO) "
         "VALUES (?, ?, ?, ?);";
 
     sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);

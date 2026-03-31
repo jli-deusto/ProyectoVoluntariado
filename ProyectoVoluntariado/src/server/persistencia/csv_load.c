@@ -18,6 +18,37 @@
 #include "shared/modelo_actividad.h"
 #include "shared/modelo_user.h"
 
+// ---PARA EL MENU DEL ADMINISTRADOR. VISTA PREVIA Y ERRORES-----
+int validar_csv_y_mostrar(const char *ruta, int columnas_esperadas) {
+    FILE *f = fopen(ruta, "r");
+    if (!f) {
+        printf("[ERROR] No se pudo abrir %s\n", ruta);
+        return -1;
+    }
+
+    char linea[512];
+    int fila = 0;
+    int errores = 0;
+
+    printf("\n--- VISTA PREVIA: %s ---\n", ruta);
+    while (fgets(linea, sizeof(linea), f)) {
+        fila++;
+        if (fila == 1) continue; // Saltar cabecera
+
+        // Contar columnas (comas)
+        int comas = 0;
+        for (int i = 0; linea[i]; i++) if (linea[i] == ',') comas++;
+
+        if (comas < (columnas_esperadas - 1)) {
+            printf("[FILA %d] ERROR: Faltan datos (Columnas incompletas)\n", fila);
+            errores++;
+        } else {
+            printf("[FILA %d] OK: %s", fila, linea);
+        }
+    }
+    fclose(f);
+    return errores;
+}
 
 //----------------------- CARGAR USUARIOS -----------------------
 void cargar_usuarios_csv(sqlite3 *db, const char *ruta) {

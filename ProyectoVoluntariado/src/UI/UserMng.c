@@ -14,7 +14,7 @@
 #include "shared/modelo_user.h"
 #include "server/persistencia/repo_usuario.h"
 
-sqlite3 *db;
+extern sqlite3 *db;
 
 // funciones repetidas
 void extraerCadena(const char *mensaje, char *dest, size_t tam) {
@@ -44,7 +44,7 @@ void extraerClave(char *clave) {
 
 
 int crearUsuario(){
-	char tlf[MAX_PASSWORD];
+	char tlf[MAX_TELEFONO];
 	char clave[MAX_PASSWORD];
 	char username[MAX_NOMBRE];
 	char mail[MAX_EMAIL];

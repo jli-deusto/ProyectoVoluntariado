@@ -14,7 +14,7 @@ void repo_reserva_insert(sqlite3 *db, Reserva *r) {
     sqlite3_stmt *stmt;
 
     const char *sql =
-        "INSERT INTO RESERVA (ESTADO_RESERVA, FECHA, ID_USUARIO, ID_ACTIVIDAD) "
+        "INSERT OR REPLACE INTO RESERVA (ESTADO_RESERVA, FECHA, ID_USUARIO, ID_ACTIVIDAD) "
         "VALUES (?, ?, ?, ?);";
 
     sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);

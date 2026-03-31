@@ -15,7 +15,7 @@ void repo_actividad_insert(sqlite3 *db, Actividad *a) {
     sqlite3_stmt *stmt;
 
     const char *sql =
-        "INSERT INTO ACTIVIDAD (TITULO, MAX_PLAZAS, UBICACION, DESCRIPCION, "
+        "INSERT OR REPLACE INTO ACTIVIDAD (TITULO, MAX_PLAZAS, UBICACION, DESCRIPCION, "
         "HORA_INIT, HORA_FIN, TIPO, FECHA) "
         "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 
