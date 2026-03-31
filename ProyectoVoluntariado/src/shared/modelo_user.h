@@ -16,8 +16,8 @@ typedef struct{
 	char nombre[MAX_NOMBRE];
     char tlf[MAX_TELEFONO];
     int  rol;                // 0 = voluntario, 1 = admin
-    int  estado_cuenta;
-    char fecha_reg[FECHA];   // 0 = inactiva, 1 = activa
+    int  estado_cuenta; // 0 = inactiva, 1 = activa
+    char fecha_reg[FECHA];
 } User;
 
 #endif /* MODELO_USER_H_ */
