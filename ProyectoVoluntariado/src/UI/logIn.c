@@ -7,9 +7,11 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "logIn.h"
-#include "src/shared/constantes.h"
-#include "src/admin/validar/data_validar.h"
-#include "src/UI/logIn.h"
+#include "shared/constantes.h"
+#include "admin/validar/data_validar.h"
+#include "UI/logIn.h"
+#include "UI/menu.h"
+
 void bienvenida() {
 	int opcion;
 	char buffer[opt];
@@ -53,10 +55,10 @@ void inicio_sesion() {
 	fflush(stdout);
 	fgets(buffer_pwd, sizeof(buffer_pwd), stdin);
 	sscanf(buffer_pwd, "%s", clave);
-	if (validarAdmin(username,clave) == 0) {
-		menu_admin();
+	if (validarAdmin(username, clave) == 1) {
+	    menu_admin();
 	} else {
-		puts("datos correctos, si eres admin");
+	    puts("Usuario o clave incorrecta");
 	}
 
 	fflush(stdout);

@@ -7,7 +7,7 @@
 
 #include "../../Libs/sqlite/sqlite3.h"
 #include "repo_usuario.h"
-#include "src/shared/modelo_user.h"
+#include "shared/modelo_user.h"
 #include <stdio.h>
 
 void repo_usuario_insert(sqlite3 *db, User *u) {

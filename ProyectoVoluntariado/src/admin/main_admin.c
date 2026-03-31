@@ -10,7 +10,7 @@
 #include "config/config_sistema.h" // to read admin.conf
 #include "guardar/admin_data_manager.h" // to open DB
 #include "../UI/menu.h"
-#include "src/shared/constantes.h"
+#include "shared/constantes.h"
 
 int main_admin(){
 	// 1. read admin.conf

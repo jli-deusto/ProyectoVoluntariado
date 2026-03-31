@@ -9,7 +9,7 @@
 #define PERSISTENCIA_REPO_ACTIVIDAD_H_
 
 #include "../../Libs/sqlite/sqlite3.h"
-#include "src/shared/modelo_actividad.h"
+#include "shared/modelo_actividad.h"
 
 void repo_actividad_insert(sqlite3 *db, Actividad *a);
 

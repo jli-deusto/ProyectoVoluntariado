@@ -8,8 +8,8 @@
 #ifndef PERSISTENCIA_REPO_USUARIO_H_
 #define PERSISTENCIA_REPO_USUARIO_H_
 
-#include "../../Libs/sqlite/sqlite3.h"
-#include "src/shared/modelo_user.h"
+#include "Libs/sqlite/sqlite3.h"
+#include "shared/modelo_user.h"
 
 void repo_usuario_insert(sqlite3 *db, User *u);
 

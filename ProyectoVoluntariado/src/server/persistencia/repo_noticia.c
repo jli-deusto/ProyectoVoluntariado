@@ -7,7 +7,7 @@
 
 #include "../../Libs/sqlite/sqlite3.h"
 #include "repo_noticia.h"
-#include "src/shared/modelo_noticia.h"
+#include "shared/modelo_noticia.h"
 #include <stdio.h>
 
 void repo_noticia_insert(sqlite3 *db, Noticia *n) {

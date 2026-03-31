@@ -7,7 +7,7 @@
 
 #include <stdio.h>
 #include "menu.h"
-#include "src/shared/constantes.h"
+#include "shared/constantes.h"
 void menu_usuarios() {}
 
 void menu_actividades() {}

@@ -8,8 +8,8 @@
 #ifndef PERSISTENCIA_REPO_RESERVA_H_
 #define PERSISTENCIA_REPO_RESERVA_H_
 
+#include "shared/modelo_reserva.h"
 #include "../../Libs/sqlite/sqlite3.h"
-#include "src/shared/modelo_reserva.h"
 
 void repo_reserva_insert(sqlite3 *db, Reserva *r);
 
