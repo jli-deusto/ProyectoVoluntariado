@@ -153,18 +153,18 @@ void gestion_usuarios() {
         "Eliminar usuario",
         "Salir"
     };
-
-    MenuCallback funciones[] = {
+    User usuario;
+    MenuCallbackUser funciones[] = {
         crearUsuario,   // 1
-        NULL,           // 2 -> TBD
-        NULL,           // 3 -> TBD
+        modificarUsuario,           // 2 -> TBD
+        eliminarUsuario,           // 3 -> TBD
         NULL            // 4 -> Salir
     };
 
     int num_opciones = sizeof(opciones) / sizeof(opciones[0]);
     int num_funciones = sizeof(funciones) / sizeof(funciones[0]);
 
-    MostrarMenu(header, (char **)opciones, funciones, num_opciones, num_funciones);
+    MostrarMenuUsers(header, (char **)opciones, funciones, num_opciones, num_funciones, &usuario);
 }
 
 

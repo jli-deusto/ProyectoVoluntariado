@@ -113,3 +113,41 @@ int repo_usuario_update(sqlite3 *db, User *u) {
     return 1;
 }
 
+int repo_usuario_check(sqlite3 *db, User *u) {
+
+    sqlite3_stmt *stmt;
+
+    const char *sql =
+        "SELECT NOMBRE, MAIL FROM USUARIO WHERE NOMBRE LIKE ? AND MAIL LIKE ?";
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
+        printf("Error preparando SELECT: %s\n", sqlite3_errmsg(db));
+        return 0;
+    }
+
+    // Bind 1: nombre
+    sqlite3_bind_text(stmt, 1, u->nombre, -1, SQLITE_STATIC);
+
+    // Bind 2: mail
+    sqlite3_bind_text(stmt, 2, u->mail, -1, SQLITE_STATIC);
+
+    int rc = sqlite3_step(stmt);
+
+    if (rc == SQLITE_ROW) {
+        // Existe un usuario con ese nombre y mail
+    	printf("Ya existe un usuario con ese nombre y con ese correo.\n");
+        sqlite3_finalize(stmt);
+        return 0;
+    }
+
+    if (rc == SQLITE_DONE) {
+        // No existe
+        sqlite3_finalize(stmt);
+        return 1;
+    }
+
+    // Error SQL
+    printf("Error ejecutando SELECT: %s\n", sqlite3_errmsg(db));
+    sqlite3_finalize(stmt);
+    return 0;
+}
