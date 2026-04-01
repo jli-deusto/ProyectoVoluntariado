@@ -7,35 +7,35 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "logIn.h"
+#include "gestionMenu.h"
 #include "shared/constantes.h"
 #include "admin/validar/data_validar.h"
 #include "UI/logIn.h"
 #include "UI/menu.h"
 
 void bienvenida() {
-	int opcion;
-	char buffer[opt];
-	printf("=========================================\n");
-	printf("~ Bienvenido a B2H: Back to heaven ~\n");
-	printf("=========================================\n");
-	printf("1. iniciar sesion\n");
-	printf("2. registrarse\n");
-	printf("3. Salir del sistema\n");
-	printf("Selecciona una opcion: ");
-	fflush(stdout);
-	fgets(buffer, sizeof(buffer), stdin);
-	sscanf(buffer, "%d", &opcion);
-	switch (opcion) {
-	case 1: inicio_sesion(); break;
-	case 2:	registro(); break;
-	case 3: log_out(); break;
-	default: {
-		puts("opcion no valida\n");
-		bienvenida();
-	}
 
-	}
+    char header[] = "~ Bienvenido a B2H: Back to heaven ~";
+
+    const char *opciones[] = {
+        "Iniciar sesión",
+        "Registrarse",
+        "Salir del sistema"
+    };
+
+    MenuCallback funciones[] = {
+        inicio_sesion,   // 1
+        registro,        // 2
+        log_out          // 3
+    };
+
+    int num_opciones   = sizeof(opciones)  / sizeof(opciones[0]);
+    int num_funciones  = sizeof(funciones) / sizeof(funciones[0]);
+
+    MostrarMenu(header, (char **)opciones, funciones,
+                num_opciones, num_funciones);
 }
+
 
 void inicio_sesion() {
 	char username[MAX_NOMBRE];

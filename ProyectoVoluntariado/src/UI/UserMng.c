@@ -13,6 +13,7 @@
 #include "shared/constantes.h"
 #include "shared/modelo_user.h"
 #include "server/persistencia/repo_usuario.h"
+#include "gestionMenu.h"
 
 extern sqlite3 *db;
 
@@ -87,16 +88,25 @@ int crearUsuario(){
 
 //User obtenerUsuario(){}
 int modificarUsuario(User *usuario){
-	usuario->estado_cuenta = 0;
+
+	puts("==========Modificacion de Usuario==========");
 	if (sqlite3_open("server_data.db", &db) != SQLITE_OK) {
 		    printf("No se pudo abrir la base de datos\n");
 		    return 0;
 		}
-		int sol = repo_usuario_update(db, &usuario);
-		sqlite3_close(db);
-		return sol;
-	return 0;
+	int sol = repo_usuario_update(db, usuario);
+	sqlite3_close(db);
+	return sol;
 };
+
 int eliminarUsuario(User *usuario){
-	return 0;
+	usuario->estado_cuenta = 0;
+	if (sqlite3_open("server_data.db", &db) != SQLITE_OK) {
+		printf("No se pudo abrir la base de datos\n");
+		return 0;
+		}
+	int sol = repo_usuario_update(db, usuario);
+	sqlite3_close(db);
+	return sol;
+
 };
