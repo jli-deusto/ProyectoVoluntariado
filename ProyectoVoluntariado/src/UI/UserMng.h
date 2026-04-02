@@ -10,7 +10,7 @@
 #include "shared/constantes.h"
 #include "shared/modelo_user.h"
 
-int crearUsuario();
+int crearUsuario(User *usuario);
 int modificarUsuario(User *usuario);
 int eliminarUsuario(User *usuario);
 void extraerNombre(char usuario[MAX_NOMBRE]);

@@ -76,11 +76,11 @@ int crearUsuario(User *usuario) {
 		printf("No se pudo abrir la base de datos\n");
 		return 0;
 	}
-	int sol = repo_usuario_check(db, &usuario);
+	int sol = repo_usuario_check(db, usuario);
 	if (sol == 0) {
 		gestion_usuarios();
 	}
-	sol = repo_usuario_insert(db, &usuario);
+	sol = repo_usuario_insert(db, usuario);
 	sqlite3_close(db);
 	return sol;
 }

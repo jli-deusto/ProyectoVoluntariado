@@ -10,10 +10,11 @@
 #include "UI/logIn.h"
 int main_server();
 int main_admin();
+#include <unistd.h>
+
 
 int main() {
     int opcion;
-
     bienvenida(); // datos admin
     inicio_sesion(); // inicio sesion admin
     printf("1. Ejecutar modo ADMIN\n");
@@ -31,3 +32,5 @@ int main() {
         return 1;
     }
 }
+
+
