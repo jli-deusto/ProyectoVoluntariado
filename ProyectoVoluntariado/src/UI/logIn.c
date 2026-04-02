@@ -62,6 +62,7 @@ void inicio_sesion() {
 	fflush(stdout);
 
 }
+
 void registro() {
 	puts("tbd");
 	fflush(stdout);

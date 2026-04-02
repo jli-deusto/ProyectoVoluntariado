@@ -15,8 +15,14 @@ int main_admin();
 
 int main() {
     int opcion;
-    bienvenida(); // datos admin
+    bienvenida(); // Pagina inicial; datos admin
     inicio_sesion(); // inicio sesion admin
+
+
+
+
+
+
     printf("1. Ejecutar modo ADMIN\n");
     printf("2. Ejecutar modo SERVER\n");
     printf("Seleccione una opción: ");

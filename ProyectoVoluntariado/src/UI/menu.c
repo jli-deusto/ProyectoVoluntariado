@@ -11,7 +11,8 @@
 #include "menu.h"
 #include "gestionMenu.h"
 #include "shared/constantes.h"
-#include  "UI/UserMng.h"
+#include "UI/UserMng.h"
+#include "UI/ActMng.h"
 #include "admin/config/config_sistema.h"
 #include "server/persistencia/db_connector.h"
 #include "server/persistencia/db_init.h"
@@ -26,8 +27,7 @@ void mostrar_configuracion_sistema();
 
 void limpiar_buffer() {
 	int c;
-	while ((c = getchar()) != '\n' && c != EOF)
-		;
+	while ((c = getchar()) != '\n' && c != EOF);
 }
 
 void ejecutar_flujo_importacion() {
@@ -169,9 +169,30 @@ void gestion_usuarios() {
 
 
 void gestion_actividades() {
-	// crear actividad
-	// modificar actividad
-	// eliminar actividad
+
+	char header[] = "Gestión de Actividades";
+
+	const char *opciones[] = {
+	        "Crear Actividad",
+	        "Modificar Actividad",
+	        "Eliminar Actividad",
+	        "Salir"
+	    };
+
+	Actividad actividad;
+
+	MenuCallbackActividad funciones[] = {
+			crearActividad,   // 1 -> TBD
+			modificarActividad,           // 2 -> TBD
+			eliminarActividad,           // 3 -> TBD
+			NULL            // 4 -> Salir
+	};
+
+	int num_opciones = sizeof(opciones) / sizeof(opciones[0]);
+	int num_funciones = sizeof(funciones) / sizeof(funciones[0]);
+
+	MostrarMenuActividades(header, (char **)opciones, funciones, num_opciones, num_funciones, &actividad);
+
 }
 ;
 void gestion_noticias() {
