@@ -26,9 +26,12 @@ void gestion_informes();
 void mostrar_configuracion_sistema();
 
 void limpiar_buffer() {
-	int c;
-	while ((c = getchar()) != '\n' && c != EOF);
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF) {
+    }
 }
+
+
 
 void ejecutar_flujo_importacion() {
 
@@ -182,9 +185,9 @@ void gestion_actividades() {
 	Actividad actividad;
 
 	MenuCallbackActividad funciones[] = {
-			crearActividad,   // 1 -> TBD
-			modificarActividad,           // 2 -> TBD
-			eliminarActividad,           // 3 -> TBD
+			crearActividad,   // 1
+			modificarActividad, // 2
+			eliminarActividad,  // 3
 			NULL            // 4 -> Salir
 	};
 

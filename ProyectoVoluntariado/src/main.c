@@ -15,6 +15,7 @@ int main_admin();
 
 int main() {
     int opcion;
+    main_server(); //carga de datos
     bienvenida(); // Pagina inicial; datos admin
     inicio_sesion(); // inicio sesion admin
 
@@ -23,20 +24,20 @@ int main() {
 
 
 
-    printf("1. Ejecutar modo ADMIN\n");
-    printf("2. Ejecutar modo SERVER\n");
-    printf("Seleccione una opción: ");
-	fflush(stdout);
-    scanf("%d", &opcion);
-
-    if (opcion == 1) {
-        return main_admin();
-    } else if (opcion == 2) {
-        return main_server();
-    } else {
-        printf("Opción no válida.\n");
-        return 1;
-    }
+//    printf("1. Ejecutar modo ADMIN\n");
+//    printf("2. Ejecutar modo SERVER\n");
+//    printf("Seleccione una opción: ");
+//	fflush(stdout);
+//    scanf("%d", &opcion);
+//
+//    if (opcion == 1) {
+//        return main_admin();
+//    } else if (opcion == 2) {
+//        return main_server();
+//    } else {
+//        printf("Opción no válida.\n");
+//        return 1;
+//    }
 }
 
 

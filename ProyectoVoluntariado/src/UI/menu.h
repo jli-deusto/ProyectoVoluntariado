@@ -8,6 +8,8 @@
 #ifndef MENU_H_
 #define MENU_H_
 
+void limpiar_buffer();
+
 void menu_principal();
 void menu_admin();
 void menu_usuarios();

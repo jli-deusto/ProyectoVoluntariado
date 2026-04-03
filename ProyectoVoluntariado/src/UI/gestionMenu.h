@@ -26,6 +26,4 @@ void gestion_noticias();
 void gestion_informes();
 void mostrar_configuracion_sistema();
 
-void limpiar_buffer(void);
-
 #endif /* UI_GESTIONMENU_H_*/

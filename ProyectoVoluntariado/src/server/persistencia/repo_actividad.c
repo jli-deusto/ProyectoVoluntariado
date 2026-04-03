@@ -17,11 +17,15 @@ int repo_actividad_insert(sqlite3 *db, Actividad *a) {
     sqlite3_stmt *stmt;
 
     const char *sql =
-        "INSERT OR REPLACE INTO ACTIVIDAD (TITULO, MAX_PLAZAS, UBICACION, DESCRIPCION, "
-        "HORA_INIT, HORA_FIN, TIPO, FECHA) "
+        "INSERT INTO ACTIVIDAD "
+        "(TITULO, MAX_PLAZAS, UBICACION, DESCRIPCION, HORA_INIT, HORA_FIN, TIPO, FECHA) "
         "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 
-    sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+    int prep = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+    if (prep != SQLITE_OK) {
+        printf("ERROR PREPARE: %s\n", sqlite3_errmsg(db));
+        return 0;
+    }
 
     sqlite3_bind_text(stmt, 1, a->titulo, -1, SQLITE_STATIC);
     sqlite3_bind_int(stmt, 2, a->max_plazas);
@@ -32,11 +36,17 @@ int repo_actividad_insert(sqlite3 *db, Actividad *a) {
     sqlite3_bind_text(stmt, 7, a->tipo, -1, SQLITE_STATIC);
     sqlite3_bind_text(stmt, 8, a->fecha, -1, SQLITE_STATIC);
 
-    int ok = (sqlite3_step(stmt) == SQLITE_DONE);
-    sqlite3_finalize(stmt);
+    int step = sqlite3_step(stmt);
+    if (step != SQLITE_DONE) {
+        printf("ERROR STEP: %s\n", sqlite3_errmsg(db));
+        sqlite3_finalize(stmt);
+        return 0;
+    }
 
-    return ok;
+    sqlite3_finalize(stmt);
+    return 1;
 }
+
 
 
 int repo_actividad_update(sqlite3 *db, Actividad *a) {
