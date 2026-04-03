@@ -13,6 +13,7 @@
 #include "shared/constantes.h"
 #include "UI/UserMng.h"
 #include "UI/ActMng.h"
+#include "UI/InformesMng.h"
 #include "admin/config/config_sistema.h"
 #include "server/persistencia/db_connector.h"
 #include "server/persistencia/db_init.h"
@@ -206,10 +207,26 @@ void gestion_noticias() {
 ;
 
 void gestion_informes() {
-	printf("\n===== MÓDULO DE INFORMES =====\n");
-	//RELLENAR
-	printf("==============================\n");
+
+    char header[] = "Módulo de Informes";
+
+    const char *opciones[] = {
+        "Informes para Administradores",
+        "Salir"
+    };
+
+    MenuCallback funciones[] = {
+        informes_administradores,
+        NULL
+    };
+
+    int num_opciones = sizeof(opciones) / sizeof(opciones[0]);
+    int num_funciones = sizeof(funciones) / sizeof(funciones[0]);
+
+    MostrarMenu(header, (char **)opciones, funciones, num_opciones, num_funciones);
 }
+
+
 
 void mostrar_configuracion_sistema() {
 	ConfigAdmin config;

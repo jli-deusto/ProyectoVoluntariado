@@ -11,6 +11,8 @@
 #include "guardar/admin_data_manager.h" // to open DB
 #include "../UI/menu.h"
 #include "shared/constantes.h"
+#include "server/persistencia/db_connector.h"
+#include "Libs/sqlite/sqlite3.h"
 
 int main_admin(){
 	// 1. read admin.conf
@@ -29,10 +31,16 @@ int main_admin(){
 	printf("Máx actividades: %d \n", config.max_actividades); }
 
 	//2. open data base
-//// 1. read admin.conf
-//
-////2. open data base
-//
+	open_connection();
+
+	if (db == NULL) {
+		printf("ERROR: No se pudo abrir la base de datos.\n");
+		return 1;
+	}
+
+	printf("DEBUG → Base de datos abierta: %s\n", sqlite3_db_filename(db, NULL));
+
+
 //// 3. create database if tables do not exist .
 //
 //// 4. show the principal menu.

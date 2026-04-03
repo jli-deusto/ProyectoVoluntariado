@@ -1,5 +1,5 @@
 /*
- * main.c
+ * main_server.c
  *
  *  Created on: 19 mar 2026
  *      Author: j.li
@@ -45,7 +45,7 @@ int main_server() {
 
     //iniciar_servidor();
 
-    endSession();
+//    endSession();
 
     return 0;
 }
@@ -66,7 +66,7 @@ void debug_contadores(sqlite3 *db) {
     }
 }
 
-void endSession() {
-	sqlite3_close(db);
-}
+//void endSession() {
+//	sqlite3_close(db);
+//}
 
