@@ -181,13 +181,13 @@ void cargar_reservas_csv(sqlite3 *db, const char *ruta) {
 
     while (fgets(linea, sizeof(linea), f)) {
 
-    	char *estado = strtok(linea, ",");
+    	char *estado_reserva = strtok(linea, ",");
         char *fecha = strtok(NULL, ",");
         char *id_usuario = strtok(NULL, ",");
         char *id_actividad = strtok(NULL, "\n");
 
         Reserva r;
-        r.estado = atoi(estado);
+        r.estado_reserva = atoi(estado_reserva);
         strcpy(r.fecha, fecha);
         r.id_usuario = atoi(id_usuario);
         r.id_actividad = atoi(id_actividad);
@@ -213,13 +213,13 @@ void cargar_noticias_csv(sqlite3 *db, const char *ruta) {
     while (fgets(linea, sizeof(linea), f)) {
 
         char *titulo = strtok(linea, ",");
-        char *descripcion = strtok(NULL, ",");
+        char *contenido = strtok(NULL, ",");
         char *fecha = strtok(NULL, ",");
         char *id_usuario = strtok(NULL, "\n");
 
         Noticia n;
         strcpy(n.titulo, titulo);
-        strcpy(n.contenido, descripcion);
+        strcpy(n.contenido, contenido);
         strcpy(n.fecha_pub, fecha);
         n.id_usuario = atoi(id_usuario);
 

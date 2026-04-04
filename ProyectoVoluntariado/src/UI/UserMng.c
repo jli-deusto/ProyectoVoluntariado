@@ -72,7 +72,7 @@ int crearUsuario(User *usuario) {
 	strcpy(usuario->mail, mail);
 
 	// abrimos conexion con la bd
-	if (sqlite3_open("server_data.db", &db) != SQLITE_OK) {
+	if (sqlite3_open("data/server_data.db", &db) != SQLITE_OK) {
 		printf("No se pudo abrir la base de datos\n");
 		return 0;
 	}
@@ -101,7 +101,7 @@ int modificarUsuario(User *usuario) {
 	strcpy(usuario->pw, clave);
 	strcpy(usuario->tlf, tlf);
 
-	if (sqlite3_open("server_data.db", &db) != SQLITE_OK) {
+	if (sqlite3_open("data/server_data.db", &db) != SQLITE_OK) {
 		printf("No se pudo abrir la base de datos\n");
 		return 0;
 	}
@@ -114,7 +114,7 @@ int modificarUsuario(User *usuario) {
 int eliminarUsuario(User *usuario) {
 	puts("==============Eliminación de Usuario==============");
 	usuario->estado_cuenta = 0; // realmente no eliminamos el usuario, solo lo desactivamos
-	if (sqlite3_open("server_data.db", &db) != SQLITE_OK) {
+	if (sqlite3_open("data/server_data.db", &db) != SQLITE_OK) {
 		printf("No se pudo abrir la base de datos\n");
 		return 0;
 	}

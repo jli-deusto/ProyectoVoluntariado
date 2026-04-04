@@ -10,7 +10,7 @@
 #include "constantes.h"
 
 typedef struct{
-	int estado; // 1 aprobada 0 cancelada.
+	int estado_reserva; // 1 aprobada 0 cancelada.
 	int id_reserva;
 	int id_actividad;
 	int id_usuario;

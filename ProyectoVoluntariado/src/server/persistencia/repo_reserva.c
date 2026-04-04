@@ -19,7 +19,7 @@ void repo_reserva_insert(sqlite3 *db, Reserva *r) {
 
     sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
 
-    sqlite3_bind_int(stmt, 1, r->estado);
+    sqlite3_bind_int(stmt, 1, r->estado_reserva);
     sqlite3_bind_text(stmt, 2, r->fecha, -1, SQLITE_STATIC);
     sqlite3_bind_int(stmt, 3, r->id_usuario);
     sqlite3_bind_int(stmt, 4, r->id_actividad);

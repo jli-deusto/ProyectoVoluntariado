@@ -48,7 +48,7 @@ void open_connection() {
 		ejecutar_sqlExec(db, "CREATE TABLE IF NOT EXISTS NOTICIA ("
 					    "ID INTEGER PRIMARY KEY AUTOINCREMENT,"
 					    "TITULO TEXT NOT NULL UNIQUE,"
-					    "DESCRIPCION TEXT,"
+					    "CONTENIDO TEXT,"
 						"FECHA TEXT NOT NULL,"
                 		"ID_USUARIO INTEGER NOT NULL,"
 						"FOREIGN KEY (ID_USUARIO) REFERENCES USUARIO(ID)"

@@ -15,7 +15,6 @@ typedef struct {
 	int id_actividad;
 	char titulo[MAX_TITULO];
 	char ubicacion[MAX_UBICACION];
-	char actividad[100];
 	char descripcion[MAX_CONTENIDO];
 	char fecha[FECHA];
 	char tipo[50];
