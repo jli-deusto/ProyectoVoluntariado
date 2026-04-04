@@ -47,6 +47,7 @@ void MostrarMenu(char header[], char *opciones[], MenuCallback funciones[],
         }
 
         funciones[opcion - 1]();
+
     }
 }
 

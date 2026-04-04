@@ -26,11 +26,7 @@
 
 extern sqlite3 *db;
 
-static ConfigAdmin *config_global = NULL;
-
-void set_config_admin(ConfigAdmin *c) {
-    config_global = c;
-}
+static ConfigAdmin config;
 
 
 void gestion_usuarios();
@@ -54,7 +50,6 @@ int contar_columnas(const char *linea) {
     }
     return count;
 }
-
 
 void ejecutar_importacion_csv(const char *ruta, int columnas_esperadas, int tipo) {
 
@@ -86,14 +81,14 @@ void ejecutar_importacion_csv(const char *ruta, int columnas_esperadas, int tipo
         int columnas = contar_columnas(linea);
         printf("[FILA %d] (%d columnas) %s\n", fila, columnas, linea);
 
-        if (columnas != columnas_esperadas) {
+        if (columnas != columnas_esperadas)
             printf("  -> ADVERTENCIA: columnas incorrectas.\n");
-        }
     }
     fclose(f);
 
     char confirmacion;
     printf("\n¿Importar estos datos? (s/n): ");
+    fflush(stdout);
     scanf(" %c", &confirmacion);
     limpiar_buffer();
 
@@ -116,19 +111,22 @@ void ejecutar_importacion_csv(const char *ruta, int columnas_esperadas, int tipo
     printf("\n>>> Importación completada correctamente.\n");
 }
 
+void importar_usuarios() {
+    fflush(stdout);
 
-void importar_usuarios()     { ejecutar_importacion_csv(config_global->csv_usuarios,     7, 1); }
-void importar_actividades()  { ejecutar_importacion_csv(config_global->csv_actividades,  8, 2); }
-void importar_noticias()     { ejecutar_importacion_csv(config_global->csv_noticias,     4, 3); }
-void importar_reservas()     { ejecutar_importacion_csv(config_global->csv_reservas,     4, 4); }
-
+    ejecutar_importacion_csv(config.csv_usuarios, 7, 1);
+}
+void importar_actividades()  {
+	fflush(stdout);
+	ejecutar_importacion_csv(config.csv_actividades, 8, 2); }
+void importar_noticias()     {
+	fflush(stdout);
+ 	 ejecutar_importacion_csv(config.csv_noticias, 4, 3); }
+void importar_reservas()     {
+	fflush(stdout);
+	ejecutar_importacion_csv(config.csv_reservas, 4, 4); }
 
 void ejecutar_flujo_importacion() {
-
-    if (!config_global) {
-        printf("Error: configuración no cargada.\n");
-        return;
-    }
 
     char header[] = "Importación de Datos CSV";
 
@@ -149,30 +147,43 @@ void ejecutar_flujo_importacion() {
     };
 
     int size = sizeof(opciones) / sizeof(opciones[0]);
-
     MostrarMenu(header, opciones, funciones, size, size);
 }
 
 void menu_admin() {
-	fflush(stdout);
-	char header[] = "B2H - ADMINISTRADOR LOCAL";
 
-	char *opciones[] = { "Seleccionar archivo CSV / Importar",
-			"Gestionar Usuarios", "Gestionar Actividades", "Gestionar Noticias",
-			"Informes", "Configuración del Sistema", "Salir" };
-		MenuCallback funciones[] = {
-	    ejecutar_flujo_importacion,   // 1
-	    gestion_usuarios,             // 2
-	    gestion_actividades,          // 3
-	    gestion_noticias,             // 4
-	    gestion_informes,             // 5
-		menu_configuracion_sistema,   // 6
-	    NULL                          // 7 -> Salir (no es función)
-	};
-	int num_opciones = sizeof(opciones) / sizeof(opciones[0]);
-	int num_funciones = sizeof(funciones) / sizeof(funciones[0]);
+    if (!cargar_configuracion("data/admin.conf", &config)) {
+        printf("No se pudo leer admin.conf\n");
+        return;
+    }
 
-	MostrarMenu(header, opciones, funciones, num_opciones, num_funciones);
+    fflush(stdout);
+    char header[] = "B2H - ADMINISTRADOR LOCAL";
+
+    char *opciones[] = {
+        "Seleccionar archivo CSV / Importar",
+        "Gestionar Usuarios",
+        "Gestionar Actividades",
+        "Gestionar Noticias",
+        "Informes",
+        "Configuración del Sistema",
+        "Salir"
+    };
+
+    MenuCallback funciones[] = {
+        ejecutar_flujo_importacion,
+        gestion_usuarios,
+        gestion_actividades,
+        gestion_noticias,
+        gestion_informes,
+        menu_configuracion_sistema,
+        NULL
+    };
+
+    int num_opciones = sizeof(opciones) / sizeof(opciones[0]);
+    int num_funciones = sizeof(funciones) / sizeof(funciones[0]);
+
+    MostrarMenu(header, opciones, funciones, num_opciones, num_funciones);
 }
 
 void gestion_usuarios() {
@@ -277,17 +288,16 @@ void gestion_informes() {
 
 
 void mostrar_configuracion_sistema() {
-    if (!config_global) return;
 
     printf("\n===== CONFIGURACIÓN DEL SISTEMA =====\n");
-    printf("DB_PATH: %s\n", config_global->db_path);
-    printf("LOG_PATH: %s\n", config_global->log_path);
-    printf("CSV_USUARIOS: %s\n", config_global->csv_usuarios);
-    printf("CSV_ACTIVIDADES: %s\n", config_global->csv_actividades);
-    printf("CSV_NOTICIAS: %s\n", config_global->csv_noticias);
-    printf("CSV_RESERVAS: %s\n", config_global->csv_reservas);
-    printf("MAX_USUARIOS: %d\n", config_global->max_usuarios);
-    printf("MAX_ACTIVIDADES: %d\n", config_global->max_actividades);
+    printf("DB_PATH: %s\n", config.db_path);
+    printf("LOG_PATH: %s\n", config.log_path);
+    printf("CSV_USUARIOS: %s\n", config.csv_usuarios);
+    printf("CSV_ACTIVIDADES: %s\n", config.csv_actividades);
+    printf("CSV_NOTICIAS: %s\n", config.csv_noticias);
+    printf("CSV_RESERVAS: %s\n", config.csv_reservas);
+    printf("MAX_USUARIOS: %d\n", config.max_usuarios);
+    printf("MAX_ACTIVIDADES: %d\n", config.max_actividades);
     printf("=====================================\n");
 }
 
@@ -296,7 +306,7 @@ void editar_ruta_db() {
     printf("Nueva ruta DB: ");
     fgets(buffer, sizeof(buffer), stdin);
     buffer[strcspn(buffer, "\n")] = 0;
-    strcpy(config_global->db_path, buffer);
+    strcpy(config.db_path, buffer);
 }
 
 void editar_ruta_logs() {
@@ -304,21 +314,21 @@ void editar_ruta_logs() {
     printf("Nueva ruta LOGS: ");
     fgets(buffer, sizeof(buffer), stdin);
     buffer[strcspn(buffer, "\n")] = 0;
-    strcpy(config_global->log_path, buffer);
+    strcpy(config.log_path, buffer);
 }
 
 void editar_limite_usuarios() {
     char buffer[32];
     printf("Nuevo límite de usuarios: ");
     fgets(buffer, sizeof(buffer), stdin);
-    config_global->max_usuarios = atoi(buffer);
+    config.max_usuarios = atoi(buffer);
 }
 
 void editar_limite_actividades() {
     char buffer[32];
     printf("Nuevo límite de actividades: ");
     fgets(buffer, sizeof(buffer), stdin);
-    config_global->max_actividades = atoi(buffer);
+    config.max_actividades = atoi(buffer);
 }
 
 void guardar_configuracion_sistema() {
@@ -329,16 +339,16 @@ void guardar_configuracion_sistema() {
         return;
     }
 
-    fprintf(f, "DB_PATH=%s\n", config_global->db_path);
-    fprintf(f, "LOG_PATH=%s\n", config_global->log_path);
-    fprintf(f, "CSV_USUARIOS=%s\n", config_global->csv_usuarios);
-    fprintf(f, "CSV_ACTIVIDADES=%s\n", config_global->csv_actividades);
-    fprintf(f, "CSV_NOTICIAS=%s\n", config_global->csv_noticias);
-    fprintf(f, "CSV_RESERVAS=%s\n", config_global->csv_reservas);
-    fprintf(f, "ADMIN_USER=%s\n", config_global->admin_user);
-    fprintf(f, "ADMIN_PASS=%s\n", config_global->admin_pass);
-    fprintf(f, "MAX_USUARIOS=%d\n", config_global->max_usuarios);
-    fprintf(f, "MAX_ACTIVIDADES=%d\n", config_global->max_actividades);
+    fprintf(f, "DB_PATH=%s\n", config.db_path);
+    fprintf(f, "LOG_PATH=%s\n", config.log_path);
+    fprintf(f, "CSV_USUARIOS=%s\n", config.csv_usuarios);
+    fprintf(f, "CSV_ACTIVIDADES=%s\n", config.csv_actividades);
+    fprintf(f, "CSV_NOTICIAS=%s\n", config.csv_noticias);
+    fprintf(f, "CSV_RESERVAS=%s\n", config.csv_reservas);
+    fprintf(f, "ADMIN_USER=%s\n", config.admin_user);
+    fprintf(f, "ADMIN_PASS=%s\n", config.admin_pass);
+    fprintf(f, "MAX_USUARIOS=%d\n", config.max_usuarios);
+    fprintf(f, "MAX_ACTIVIDADES=%d\n", config.max_actividades);
 
     fclose(f);
 
@@ -346,15 +356,6 @@ void guardar_configuracion_sistema() {
 }
 
 void menu_configuracion_sistema() {
-
-    ConfigAdmin config;
-
-    if (!cargar_configuracion("data/admin.conf", &config)) {
-        printf("No se pudo leer admin.conf\n");
-        return;
-    }
-
-    set_config_admin(&config);
 
     char header[] = "Configuración del Sistema";
 

@@ -23,16 +23,18 @@ int cargar_configuracion(const char *ruta, ConfigAdmin *config){
 
     while(fgets(linea, sizeof(linea), f)){
 
-        if (linea[0] == '#' || linea[0] == '\n')
+        // Eliminar saltos de línea y \r
+        linea[strcspn(linea, "\r\n")] = 0;
+
+        if (linea[0] == '#' || linea[0] == '\0')
             continue;
 
         char *clave = strtok(linea, "=");
-        char *valor = strtok(NULL, "\n");
+        char *valor = strtok(NULL, "");
 
         if(!clave || !valor)
             continue;
 
-        // trim espacios
         while(*clave == ' ') clave++;
         while(*valor == ' ') valor++;
 
