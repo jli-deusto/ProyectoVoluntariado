@@ -9,6 +9,7 @@
 #include "repo_usuario.h"
 #include "shared/modelo_user.h"
 #include <stdio.h>
+#include <string.h>
 
 int repo_usuario_insert(sqlite3 *db, User *u) {
 
@@ -148,6 +149,42 @@ int repo_usuario_check(sqlite3 *db, User *u) {
 
     // Error SQL
     printf("Error ejecutando SELECT: %s\n", sqlite3_errmsg(db));
+    sqlite3_finalize(stmt);
+    return 0;
+}
+
+
+int repo_usuario_get(sqlite3 *db, int id, User *u) {
+
+    sqlite3_stmt *stmt;
+
+    const char *sql =
+        "SELECT ID, NOMBRE, TLF, MAIL, PW, ROL, ESTADO_CUENTA, FECHA_REG "
+        "FROM USUARIO WHERE ID = ?;";
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
+        printf("Error preparando SELECT: %s\n", sqlite3_errmsg(db));
+        return 0;
+    }
+
+    sqlite3_bind_int(stmt, 1, id);
+
+    int rc = sqlite3_step(stmt);
+
+    if (rc == SQLITE_ROW) {
+        u->id = sqlite3_column_int(stmt, 0);
+        strcpy(u->nombre, (const char*)sqlite3_column_text(stmt, 1));
+        strcpy(u->tlf, (const char*)sqlite3_column_text(stmt, 2));
+        strcpy(u->mail, (const char*)sqlite3_column_text(stmt, 3));
+        strcpy(u->pw, (const char*)sqlite3_column_text(stmt, 4));
+        u->rol = sqlite3_column_int(stmt, 5);
+        u->estado_cuenta = sqlite3_column_int(stmt, 6);
+        strcpy(u->fecha_reg, (const char*)sqlite3_column_text(stmt, 7));
+
+        sqlite3_finalize(stmt);
+        return 1;
+    }
+
     sqlite3_finalize(stmt);
     return 0;
 }

@@ -41,7 +41,6 @@ void MostrarMenu(char header[], char *opciones[], MenuCallback funciones[],
             continue;
         }
 
-        // si la última opción es "Salir"
         if (opcion == size1) {
             return;
         }
@@ -52,38 +51,44 @@ void MostrarMenu(char header[], char *opciones[], MenuCallback funciones[],
 }
 
 
-void MostrarMenuUsers(char header[], char *opciones[], MenuCallbackUser funciones[],int size1, int size2, User *usuario) {
-	int opcion = -1;
-	do {
+void MostrarMenuUsers(char header[], char *opciones[], MenuCallbackUser funciones[],
+                      int size1, int size2, User *usuario) {
 
-		printf("\n==========================================\n        %s      \n==========================================\n", header);
-		if (size1 != size2) {
-			puts("llamada a funcion mal definida");
-			return;
-		}
-		for (int i = 0; i < size1; i++) {
-			printf("%d. %s\n", i + 1, opciones[i]);
-		}
-		fflush(stdout);
+    int opcion = -1;
 
-		char bufferOpcion[20];
-		printf("Seleccione una opcion: ");
-		fflush(stdout);
+    while (1) {
 
-		if (!fgets(bufferOpcion, sizeof(bufferOpcion), stdin)
-				|| sscanf(bufferOpcion, "%d", &opcion) != 1 || opcion < 1
-				|| opcion > size1) {
+        printf("\n==========================================\n        %s      \n==========================================\n", header);
 
-			puts("Opción inválida");
-			opcion = -1;
-		} else {
-			funciones[opcion -1](usuario);
-		}
-	} while (opcion == -1);
-	return;
+        if (size1 != size2) {
+            puts("llamada a funcion mal definida");
+            return;
+        }
 
+        for (int i = 0; i < size1; i++) {
+            printf("%d. %s\n", i + 1, opciones[i]);
+        }
+        fflush(stdout);
+
+        char bufferOpcion[20];
+        printf("Seleccione una opcion: ");
+        fflush(stdout);
+
+        if (!fgets(bufferOpcion, sizeof(bufferOpcion), stdin) ||
+            sscanf(bufferOpcion, "%d", &opcion) != 1 ||opcion < 1
+			|| opcion > size1){
+
+        	puts("Opción inválida");
+            continue;
+        }
+
+        if (opcion == size1) {
+            return;
+        }
+
+        funciones[opcion - 1](usuario);
+    }
 };
-
 
 
 void MostrarMenuActividades(char header[], char *opciones[], MenuCallbackActividad funciones[], int size1, int size2, Actividad *actividad) {

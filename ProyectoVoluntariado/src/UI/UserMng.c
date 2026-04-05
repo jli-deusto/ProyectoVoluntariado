@@ -91,9 +91,18 @@ int modificarUsuario(User *usuario) {
 	char tlf[MAX_TELEFONO];
 	char clave[MAX_PASSWORD];
 
-	puts("==============Modificación de Usuario==============");
+	puts("\n============== Modificación de Usuario ==============\n");
 	puts("**Por cuestiones de gestión y administración\n "
-			"el mail y el nombre no podrán ser modificados**");
+			"el mail y el nombre no podrán ser modificados**\n");
+
+	if (!cargarUsuarioPorID(usuario)) {
+		return 0;
+	}
+
+    printf("\n--- Datos actuales ---\n");
+    printf("Nombre: %s\n", usuario->nombre);
+    printf("Mail: %s\n", usuario->mail);
+    printf("Teléfono: %s\n", usuario->tlf);
 
 	extraerClave(clave);
 	extraerTlf(tlf);
@@ -107,12 +116,37 @@ int modificarUsuario(User *usuario) {
 	}
 	int sol = repo_usuario_update(db, usuario);
 	sqlite3_close(db);
+
+	if (sol){
+		printf("Usuario modificado correctamente.\n");
+	}else{
+		printf("Error al modificar usuario.\n");
+	}
+
 	return sol;
 }
 ;
 
 int eliminarUsuario(User *usuario) {
 	puts("==============Eliminación de Usuario==============");
+
+	if (!cargarUsuarioPorID(usuario)) {
+		return 0;
+	}
+
+	printf("\n--- Usuario encontrado ---\n");
+	printf("Nombre: %s\n", usuario->nombre);
+	printf("Mail: %s\n", usuario->mail);
+	printf("Teléfono: %s\n", usuario->tlf);
+
+	char confirm[8];
+	extraerCadena("¿Eliminar este usuario? (s/n): ", confirm, sizeof(confirm));
+
+	if (confirm[0] != 's' && confirm[0] != 'S') {
+		printf("Operación cancelada.\n");
+		return 0;
+	}
+
 	usuario->estado_cuenta = 0; // realmente no eliminamos el usuario, solo lo desactivamos
 	if (sqlite3_open("data/server_data.db", &db) != SQLITE_OK) {
 		printf("No se pudo abrir la base de datos\n");
@@ -120,7 +154,44 @@ int eliminarUsuario(User *usuario) {
 	}
 	int sol = repo_usuario_update(db, usuario);
 	sqlite3_close(db);
+
+	if (sol){
+		printf("Usuario eliminado correctamente.\n");
+	}else{
+		printf("Error al eliminar usuario.\n");
+	}
+
 	return sol;
 
 }
 ;
+
+
+int cargarUsuarioPorID(User *usuario) {
+    char buffer[16];
+
+    printf("ID del usuario: ");
+    fflush(stdout);
+
+    if (!fgets(buffer, sizeof(buffer), stdin) ||
+        sscanf(buffer, "%d", &usuario->id) != 1) {
+        printf("ID inválido.\n");
+        return 0;
+    }
+
+    if (sqlite3_open("data/server_data.db", &db) != SQLITE_OK) {
+        printf("No se pudo abrir la base de datos\n");
+        return 0;
+    }
+
+    if (!repo_usuario_get(db, usuario->id, usuario)) {
+        printf("No existe usuario con ese ID.\n");
+        sqlite3_close(db);
+        return 0;
+    }
+
+    sqlite3_close(db);
+    return 1;
+}
+
+

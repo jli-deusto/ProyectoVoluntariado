@@ -13,6 +13,7 @@
 int crearUsuario(User *usuario);
 int modificarUsuario(User *usuario);
 int eliminarUsuario(User *usuario);
+int cargarUsuarioPorID(User *u);
 void extraerNombre(char usuario[MAX_NOMBRE]);
 void extraerMail(char usuario[MAX_NOMBRE]);
 void extraerTlf(char usuario[MAX_NOMBRE]);
