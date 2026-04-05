@@ -64,7 +64,7 @@ void inicio_sesion() {
 }
 
 void registro() {
-	puts("tbd");
+	puts("TBD: Disponible próximamente! :D");
 	fflush(stdout);
 }
 
