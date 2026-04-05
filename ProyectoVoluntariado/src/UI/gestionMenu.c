@@ -18,7 +18,7 @@ void MostrarMenu(char header[], char *opciones[], MenuCallback funciones[],
 
     while (1) {
 
-        printf("\n==========================================\n        %s      \n==========================================\n", header);
+        printf("\n==================================================\n        %s      \n==================================================\n", header);
 
         if (size1 != size2) {
             puts("llamada a funcion mal definida");
