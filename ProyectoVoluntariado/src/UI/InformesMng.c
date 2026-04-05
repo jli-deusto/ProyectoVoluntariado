@@ -78,6 +78,7 @@ void estadisticas_centro() {
     printf("\n===== ESTADÍSTICAS DEL CENTRO =====\n");
 
     printf("// TBD: horas trabajadas, residuos recogidos, animales rescatados.\n");
+    printf("// Disponible próximamente !! :D");
 }
 
 void participacion_voluntariado() {
@@ -124,6 +125,7 @@ void participacion_voluntariado() {
 void registro_incidencias() {
     printf("\n===== REGISTRO DE INCIDENCIAS MEDIOAMBIENTALES =====\n");
     printf("// TBD: implementar tabla INCIDENCIA.\n");
+    printf("// Disponible próximamente !! :D");
 }
 
 void mostrar_logs() {

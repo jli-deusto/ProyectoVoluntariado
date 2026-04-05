@@ -42,7 +42,10 @@ void MostrarMenu(char header[], char *opciones[], MenuCallback funciones[],
         }
 
         if (opcion == size1) {
-            return;
+        	if (funciones[opcion - 1] != NULL) {
+        		funciones[opcion - 1]();
+        	}
+        	return;
         }
 
         funciones[opcion - 1]();
@@ -83,6 +86,8 @@ void MostrarMenuUsers(char header[], char *opciones[], MenuCallbackUser funcione
         }
 
         if (opcion == size1) {
+            if (funciones[opcion - 1] != NULL)
+                funciones[opcion - 1](usuario);
             return;
         }
 
@@ -121,6 +126,8 @@ void MostrarMenuActividades(char header[], char *opciones[], MenuCallbackActivid
         }
 
         if (opcion == size1) {
+            if (funciones[opcion - 1] != NULL)
+                funciones[opcion - 1](actividad);
             return;
         }
 

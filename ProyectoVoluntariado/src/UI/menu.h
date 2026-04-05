@@ -20,5 +20,6 @@ void gestion_usuarios();
 void gestion_actividades();
 void gestion_noticias();
 void gestion_informes();
+void salir_admin();
 
 #endif /* MENU_H_ */

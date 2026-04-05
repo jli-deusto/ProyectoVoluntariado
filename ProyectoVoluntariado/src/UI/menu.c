@@ -14,6 +14,7 @@
 #include "shared/modelo_user.h"
 #include "shared/modelo_actividad.h"
 #include "shared/modelo_noticia.h"
+#include "UI/logIn.h"
 #include "UI/UserMng.h"
 #include "UI/ActMng.h"
 #include "UI/InformesMng.h"
@@ -177,7 +178,7 @@ void menu_admin() {
         gestion_noticias,
         gestion_informes,
         menu_configuracion_sistema,
-        NULL
+        salir_admin
     };
 
     int num_opciones = sizeof(opciones) / sizeof(opciones[0]);
@@ -248,7 +249,7 @@ void gestion_noticias() {
         "Salir"
     };
 
-    Noticia noticia;
+    //Noticia noticia;
 
     MenuCallback funciones[] = {
         (MenuCallback)crearNoticia,
@@ -383,3 +384,25 @@ void menu_configuracion_sistema() {
 
     MostrarMenu(header, opciones, funciones, size, size);
 }
+
+
+void salir_admin() {
+    char buffer[8];
+
+    printf("\n¿Deseas cerrar sesión? (s/n): ");
+    fflush(stdout);
+
+    if (!fgets(buffer, sizeof(buffer), stdin)) {
+        printf("Entrada inválida.\n");
+        return; // vuelve al menu admin
+    }
+
+    if (buffer[0] == 's' || buffer[0] == 'S') {
+        printf("\nCerrando sesión...\n");
+        return;
+    } else {
+        printf("\nOperación cancelada. Volviendo al menú administrador...\n");
+        return;
+    }
+}
+

@@ -13,17 +13,20 @@
 #include "Libs/sqlite/sqlite3.h"
 
 int main_server();
-int main_admin();
 
 int main() {
-    int opcion;
+    //int opcion;
     main_server(); //carga de datos
-    bienvenida(); // Pagina inicial; datos admin
-    inicio_sesion(); // inicio sesion admin
+    while(1){
+    	bienvenida(); // Pagina inicial; datos admin
+    }
+
+    //inicio_sesion(); // inicio sesion admin
 
     if (db != NULL) {
     	sqlite3_close(db);
     }
+
     return 0;
 
 //    printf("1. Ejecutar modo ADMIN\n");

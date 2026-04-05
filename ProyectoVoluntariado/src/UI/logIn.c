@@ -69,6 +69,23 @@ void registro() {
 }
 
 void log_out() {
-	puts("tbd");
-	fflush(stdout);
+    char buffer[8];
+
+    printf("\n¿Deseas salir del programa? (s/n): ");
+    fflush(stdout);
+
+    if (!fgets(buffer, sizeof(buffer), stdin)) {
+        printf("Entrada inválida.\n");
+        return;
+    }
+
+    if (buffer[0] == 's' || buffer[0] == 'S') {
+        printf("\nSaliendo del programa...\n");
+        exit(0);
+    } else {
+        printf("\nOperación cancelada. Volviendo al menú inicial...\n");
+    }
 }
+
+
+
