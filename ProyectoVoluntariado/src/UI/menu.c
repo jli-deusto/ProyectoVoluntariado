@@ -29,6 +29,8 @@ extern sqlite3 *db;
 
 static ConfigAdmin config;
 
+int cerrar_sesion_admin = 0;
+
 
 void gestion_usuarios();
 void gestion_actividades();
@@ -184,6 +186,7 @@ void menu_admin() {
     int num_opciones = sizeof(opciones) / sizeof(opciones[0]);
     int num_funciones = sizeof(funciones) / sizeof(funciones[0]);
 
+    cerrar_sesion_admin = 0;
     MostrarMenu(header, opciones, funciones, num_opciones, num_funciones);
 }
 
@@ -394,15 +397,17 @@ void salir_admin() {
 
     if (!fgets(buffer, sizeof(buffer), stdin)) {
         printf("Entrada inválida.\n");
-        return; // vuelve al menu admin
+        return;
     }
 
     if (buffer[0] == 's' || buffer[0] == 'S') {
         printf("\nCerrando sesión...\n");
-        return;
+        cerrar_sesion_admin = 1;
     } else {
         printf("\nOperación cancelada. Volviendo al menú administrador...\n");
-        return;
+        cerrar_sesion_admin = 0;
     }
 }
+
+
 

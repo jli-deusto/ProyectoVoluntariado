@@ -11,6 +11,8 @@
 #include "shared/modelo_user.h"
 #include "menu.h"
 
+extern int cerrar_sesion_admin;
+
 void MostrarMenu(char header[], char *opciones[], MenuCallback funciones[],
                  int size1, int size2)
 {
@@ -42,10 +44,12 @@ void MostrarMenu(char header[], char *opciones[], MenuCallback funciones[],
         }
 
         if (opcion == size1) {
-        	if (funciones[opcion - 1] != NULL) {
+        	if (funciones[opcion - 1] != NULL){
         		funciones[opcion - 1]();
+                if (cerrar_sesion_admin) return;
+                continue;
         	}
-        	return;
+            return;
         }
 
         funciones[opcion - 1]();
