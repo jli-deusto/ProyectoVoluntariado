@@ -24,9 +24,9 @@ void repo_noticia_insert(sqlite3 *db, Noticia *n) {
         return;
     }
 
-    sqlite3_bind_text(stmt, 1, n->titulo, -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 2, n->contenido, -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 3, n->fecha_pub, -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 1, n->titulo, -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 2, n->contenido, -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 3, n->fecha_pub, -1, SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt, 4, n->id_usuario);
 
     int rc = sqlite3_step(stmt);
