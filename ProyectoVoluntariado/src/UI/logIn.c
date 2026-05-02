@@ -42,9 +42,15 @@ void inicio_sesion() {
 	char clave[MAX_PASSWORD];
 	char buffer_user[MAX_NOMBRE];
 	char buffer_pwd[MAX_PASSWORD];
+
+	//limpiar_buffer();
+	fflush(stdout);
+
 	// desatascar buffr stdin
 
 	printf("=================Iniciar Sesion=================\n");
+	fflush(stdout);
+
 	printf("Usuario: ");
 	fflush(stdout);
 	fgets(buffer_user, sizeof(buffer_user), stdin);

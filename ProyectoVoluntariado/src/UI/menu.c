@@ -308,6 +308,7 @@ void mostrar_configuracion_sistema() {
 void editar_ruta_db() {
     char buffer[MAX_RUTA];
     printf("Nueva ruta DB: ");
+    fflush(stdout);
     fgets(buffer, sizeof(buffer), stdin);
     buffer[strcspn(buffer, "\n")] = 0;
     strcpy(config.db_path, buffer);
@@ -316,6 +317,7 @@ void editar_ruta_db() {
 void editar_ruta_logs() {
     char buffer[MAX_RUTA];
     printf("Nueva ruta LOGS: ");
+    fflush(stdout);
     fgets(buffer, sizeof(buffer), stdin);
     buffer[strcspn(buffer, "\n")] = 0;
     strcpy(config.log_path, buffer);
@@ -324,6 +326,7 @@ void editar_ruta_logs() {
 void editar_limite_usuarios() {
     char buffer[32];
     printf("Nuevo límite de usuarios: ");
+    fflush(stdout);
     fgets(buffer, sizeof(buffer), stdin);
     config.max_usuarios = atoi(buffer);
 }
@@ -331,6 +334,7 @@ void editar_limite_usuarios() {
 void editar_limite_actividades() {
     char buffer[32];
     printf("Nuevo límite de actividades: ");
+    fflush(stdout);
     fgets(buffer, sizeof(buffer), stdin);
     config.max_actividades = atoi(buffer);
 }
@@ -340,6 +344,7 @@ void guardar_configuracion_sistema() {
     FILE *f = fopen("data/admin.conf", "w");
     if (!f) {
         printf("Error al guardar admin.conf\n");
+        fflush(stdout);
         return;
     }
 
@@ -353,7 +358,7 @@ void guardar_configuracion_sistema() {
     fprintf(f, "ADMIN_PASS=%s\n", config.admin_pass);
     fprintf(f, "MAX_USUARIOS=%d\n", config.max_usuarios);
     fprintf(f, "MAX_ACTIVIDADES=%d\n", config.max_actividades);
-
+    fflush(stdout);
     fclose(f);
 
     printf("\nConfiguración guardada correctamente.\n");
