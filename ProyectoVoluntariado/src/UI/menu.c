@@ -32,12 +32,6 @@ static ConfigAdmin config;
 int cerrar_sesion_admin = 0;
 
 
-void gestion_usuarios();
-void gestion_actividades();
-void gestion_noticias();
-void gestion_informes();
-void mostrar_configuracion_sistema();
-void menu_configuracion_sistema();
 
 void limpiar_buffer() {
     int c;
@@ -153,6 +147,96 @@ void ejecutar_flujo_importacion() {
     MostrarMenu(header, opciones, funciones, size, size);
 }
 
+
+void editar_ruta_db() {
+    char buffer[MAX_RUTA];
+    printf("Nueva ruta DB: ");
+    fflush(stdout);
+    fgets(buffer, sizeof(buffer), stdin);
+    buffer[strcspn(buffer, "\n")] = 0;
+    strcpy(config.db_path, buffer);
+}
+
+void editar_ruta_logs() {
+    char buffer[MAX_RUTA];
+    printf("Nueva ruta LOGS: ");
+    fflush(stdout);
+    fgets(buffer, sizeof(buffer), stdin);
+    buffer[strcspn(buffer, "\n")] = 0;
+    strcpy(config.log_path, buffer);
+}
+
+void editar_limite_usuarios() {
+    char buffer[32];
+    printf("Nuevo límite de usuarios: ");
+    fflush(stdout);
+    fgets(buffer, sizeof(buffer), stdin);
+    config.max_usuarios = atoi(buffer);
+}
+
+void editar_limite_actividades() {
+    char buffer[32];
+    printf("Nuevo límite de actividades: ");
+    fflush(stdout);
+    fgets(buffer, sizeof(buffer), stdin);
+    config.max_actividades = atoi(buffer);
+}
+
+void guardar_configuracion_sistema() {
+
+    FILE *f = fopen("data/admin.conf", "w");
+    if (!f) {
+        printf("Error al guardar admin.conf\n");
+        fflush(stdout);
+        return;
+    }
+
+    fprintf(f, "DB_PATH=%s\n", config.db_path);
+    fprintf(f, "LOG_PATH=%s\n", config.log_path);
+    fprintf(f, "CSV_USUARIOS=%s\n", config.csv_usuarios);
+    fprintf(f, "CSV_ACTIVIDADES=%s\n", config.csv_actividades);
+    fprintf(f, "CSV_NOTICIAS=%s\n", config.csv_noticias);
+    fprintf(f, "CSV_RESERVAS=%s\n", config.csv_reservas);
+    fprintf(f, "ADMIN_USER=%s\n", config.admin_user);
+    fprintf(f, "ADMIN_PASS=%s\n", config.admin_pass);
+    fprintf(f, "MAX_USUARIOS=%d\n", config.max_usuarios);
+    fprintf(f, "MAX_ACTIVIDADES=%d\n", config.max_actividades);
+    fflush(stdout);
+    fclose(f);
+
+    printf("\nConfiguración guardada correctamente.\n");
+}
+
+
+
+void menu_configuracion_sistema() {
+
+    char header[] = "Configuración del Sistema";
+
+    char *opciones[] = {
+        "Ver configuración actual",
+        "Modificar ruta DB",
+        "Modificar ruta LOGS",
+        "Modificar límite de usuarios",
+        "Modificar límite de actividades",
+        "Guardar cambios",
+        "Volver"
+    };
+
+    MenuCallback funciones[] = {
+        mostrar_configuracion_sistema,
+        editar_ruta_db,
+        editar_ruta_logs,
+        editar_limite_usuarios,
+        editar_limite_actividades,
+        guardar_configuracion_sistema,
+        NULL
+    };
+
+    int size = sizeof(opciones) / sizeof(opciones[0]);
+
+    MostrarMenu(header, opciones, funciones, size, size);
+}
 void menu_admin() {
 
     if (!cargar_configuracion("data/admin.conf", &config)) {
@@ -195,6 +279,7 @@ void gestion_usuarios() {
     char header[] = "Gestión de Usuarios";
 
     const char *opciones[] = {
+    	"Listar usuarios",
         "Crear usuario",
         "Modificar usuario",
         "Eliminar usuario",
@@ -202,6 +287,7 @@ void gestion_usuarios() {
     };
     User usuario;
     MenuCallbackUser funciones[] = {
+    	listarUsuarios,
         crearUsuario,   // 1
         modificarUsuario,           // 2 -> TBD
         eliminarUsuario,           // 3 -> TBD
@@ -305,93 +391,6 @@ void mostrar_configuracion_sistema() {
     printf("=====================================\n");
 }
 
-void editar_ruta_db() {
-    char buffer[MAX_RUTA];
-    printf("Nueva ruta DB: ");
-    fflush(stdout);
-    fgets(buffer, sizeof(buffer), stdin);
-    buffer[strcspn(buffer, "\n")] = 0;
-    strcpy(config.db_path, buffer);
-}
-
-void editar_ruta_logs() {
-    char buffer[MAX_RUTA];
-    printf("Nueva ruta LOGS: ");
-    fflush(stdout);
-    fgets(buffer, sizeof(buffer), stdin);
-    buffer[strcspn(buffer, "\n")] = 0;
-    strcpy(config.log_path, buffer);
-}
-
-void editar_limite_usuarios() {
-    char buffer[32];
-    printf("Nuevo límite de usuarios: ");
-    fflush(stdout);
-    fgets(buffer, sizeof(buffer), stdin);
-    config.max_usuarios = atoi(buffer);
-}
-
-void editar_limite_actividades() {
-    char buffer[32];
-    printf("Nuevo límite de actividades: ");
-    fflush(stdout);
-    fgets(buffer, sizeof(buffer), stdin);
-    config.max_actividades = atoi(buffer);
-}
-
-void guardar_configuracion_sistema() {
-
-    FILE *f = fopen("data/admin.conf", "w");
-    if (!f) {
-        printf("Error al guardar admin.conf\n");
-        fflush(stdout);
-        return;
-    }
-
-    fprintf(f, "DB_PATH=%s\n", config.db_path);
-    fprintf(f, "LOG_PATH=%s\n", config.log_path);
-    fprintf(f, "CSV_USUARIOS=%s\n", config.csv_usuarios);
-    fprintf(f, "CSV_ACTIVIDADES=%s\n", config.csv_actividades);
-    fprintf(f, "CSV_NOTICIAS=%s\n", config.csv_noticias);
-    fprintf(f, "CSV_RESERVAS=%s\n", config.csv_reservas);
-    fprintf(f, "ADMIN_USER=%s\n", config.admin_user);
-    fprintf(f, "ADMIN_PASS=%s\n", config.admin_pass);
-    fprintf(f, "MAX_USUARIOS=%d\n", config.max_usuarios);
-    fprintf(f, "MAX_ACTIVIDADES=%d\n", config.max_actividades);
-    fflush(stdout);
-    fclose(f);
-
-    printf("\nConfiguración guardada correctamente.\n");
-}
-
-void menu_configuracion_sistema() {
-
-    char header[] = "Configuración del Sistema";
-
-    char *opciones[] = {
-        "Ver configuración actual",
-        "Modificar ruta DB",
-        "Modificar ruta LOGS",
-        "Modificar límite de usuarios",
-        "Modificar límite de actividades",
-        "Guardar cambios",
-        "Volver"
-    };
-
-    MenuCallback funciones[] = {
-        mostrar_configuracion_sistema,
-        editar_ruta_db,
-        editar_ruta_logs,
-        editar_limite_usuarios,
-        editar_limite_actividades,
-        guardar_configuracion_sistema,
-        NULL
-    };
-
-    int size = sizeof(opciones) / sizeof(opciones[0]);
-
-    MostrarMenu(header, opciones, funciones, size, size);
-}
 
 
 void salir_admin() {

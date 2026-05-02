@@ -12,6 +12,7 @@
 #include "shared/constantes.h"
 #include "shared/modelo_user.h"
 #include "server/persistencia/repo_usuario.h"
+#include "shared/NodoUsuario.h"
 #include "gestionMenu.h"
 
 extern sqlite3 *db;
@@ -47,7 +48,6 @@ int crearUsuario(User *usuario) {
 	char clave[MAX_PASSWORD];
 	char username[MAX_NOMBRE];
 	char mail[MAX_EMAIL];
-
 
 	char fecha[FECHA];
 	time_t t = time(NULL);
@@ -99,10 +99,10 @@ int modificarUsuario(User *usuario) {
 		return 0;
 	}
 
-    printf("\n--- Datos actuales ---\n");
-    printf("Nombre: %s\n", usuario->nombre);
-    printf("Mail: %s\n", usuario->mail);
-    printf("Teléfono: %s\n", usuario->tlf);
+	printf("\n--- Datos actuales ---\n");
+	printf("Nombre: %s\n", usuario->nombre);
+	printf("Mail: %s\n", usuario->mail);
+	printf("Teléfono: %s\n", usuario->tlf);
 
 	extraerClave(clave);
 	extraerTlf(tlf);
@@ -117,9 +117,9 @@ int modificarUsuario(User *usuario) {
 	int sol = repo_usuario_update(db, usuario);
 	sqlite3_close(db);
 
-	if (sol){
+	if (sol) {
 		printf("Usuario modificado correctamente.\n");
-	}else{
+	} else {
 		printf("Error al modificar usuario.\n");
 	}
 
@@ -155,9 +155,9 @@ int eliminarUsuario(User *usuario) {
 	int sol = repo_usuario_update(db, usuario);
 	sqlite3_close(db);
 
-	if (sol){
+	if (sol) {
 		printf("Usuario eliminado correctamente.\n");
-	}else{
+	} else {
 		printf("Error al eliminar usuario.\n");
 	}
 
@@ -166,86 +166,102 @@ int eliminarUsuario(User *usuario) {
 }
 ;
 
-
 int cargarUsuarioPorID(User *usuario) {
-    char buffer[16];
+	char buffer[16];
 
-    printf("ID del usuario: ");
-    fflush(stdout);
+	printf("ID del usuario: ");
+	fflush(stdout);
 
-    if (!fgets(buffer, sizeof(buffer), stdin) ||
-        sscanf(buffer, "%d", &usuario->id) != 1) {
-        printf("ID inválido.\n");
-        return 0;
-    }
+	if (!fgets(buffer, sizeof(buffer), stdin)
+			|| sscanf(buffer, "%d", &usuario->id) != 1) {
+		printf("ID inválido.\n");
+		return 0;
+	}
 
-    if (sqlite3_open("data/server_data.db", &db) != SQLITE_OK) {
-        printf("No se pudo abrir la base de datos\n");
-        return 0;
-    }
+	if (sqlite3_open("data/server_data.db", &db) != SQLITE_OK) {
+		printf("No se pudo abrir la base de datos\n");
+		return 0;
+	}
 
-    if (!repo_usuario_get(db, usuario->id, usuario)) {
-        printf("No existe usuario con ese ID.\n");
-        sqlite3_close(db);
-        return 0;
-    }
+	if (!repo_usuario_get(db, usuario->id, usuario)) {
+		printf("No existe usuario con ese ID.\n");
+		sqlite3_close(db);
+		return 0;
+	}
 
-    sqlite3_close(db);
-    return 1;
+	sqlite3_close(db);
+	return 1;
 }
 
-
 void listarUsuarios() {
-    printf("\n===== LISTADO DE USUARIOS =====\n");
+	printf("\n===== LISTADO DE USUARIOS =====\n");
+	fflush(stdout);
+	// nicializar la lista vacía
+	ListaUsuarios lista;
+	lista.cabeza = NULL;
+	lista.tamanio = 0;
 
-    // 1. inicializar la lista vacía
-    ListaUsuarios lista;
-    lista.cabeza  = NULL;
-    lista.tamanio = 0;
+	// cargar todos los usuarios de la BD en la lista
+	if (sqlite3_open("data/server_data.db", &db) != SQLITE_OK) {
+		printf("No se pudo abrir la base de datos\n");
+		fflush(stdout);
 
-    // 2. cargar todos los usuarios de la BD en la lista
-    if (sqlite3_open("data/server_data.db", &db) != SQLITE_OK) {
-        printf("No se pudo abrir la base de datos\n");
-        return;
-    }
+		return;
+	}
 
-    const char *sql = "SELECT ID, NOMBRE, MAIL, TLF, ROL, ESTADO_CUENTA, FECHA_REG FROM USUARIO;";
-    sqlite3_stmt *stmt;
+	const char *sql =
+			"SELECT ID, NOMBRE, MAIL, TLF, ROL, ESTADO_CUENTA, FECHA_REG FROM USUARIO;";
+	sqlite3_stmt *stmt;
 
-    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
-        while (sqlite3_step(stmt) == SQLITE_ROW) {
-            User u;
-            u.id           = sqlite3_column_int (stmt, 0);
-            strncpy(u.nombre,    (char*)sqlite3_column_text(stmt, 1), MAX_NOMBRE);
-            strncpy(u.mail,      (char*)sqlite3_column_text(stmt, 2), MAX_EMAIL);
-            strncpy(u.tlf,       (char*)sqlite3_column_text(stmt, 3), MAX_TELEFONO);
-            u.rol          = sqlite3_column_int (stmt, 4);
-            u.estado_cuenta= sqlite3_column_int (stmt, 5);
-            strncpy(u.fecha_reg, (char*)sqlite3_column_text(stmt, 6), FECHA);
+	if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
+		while (sqlite3_step(stmt) == SQLITE_ROW) {
+			User u;
+			memset(&u, 0, sizeof(User));  // inicializar todo a 0 por seguridad
 
-            insertar_usuario(&lista, &u);  // ← malloc aquí
-        }
-        sqlite3_finalize(stmt);
-    }
-    sqlite3_close(db);
+			u.id = sqlite3_column_int(stmt, 0);
 
-    // 3. recorrer la lista e imprimir
-    if (lista.tamanio == 0) {
-        printf("No hay usuarios registrados.\n");
-    } else {
-        printf("Total: %d usuarios\n\n", lista.tamanio);
-        NodoUsuario *cur = lista.cabeza;
-        while (cur) {
-            printf("ID: %d | Nombre: %s | Mail: %s | Rol: %s | Estado: %s\n",
-                cur->data.id,
-                cur->data.nombre,
-                cur->data.mail,
-                cur->data.rol == 1 ? "Admin" : "Voluntario",
-                cur->data.estado_cuenta == 1 ? "Activo" : "Inactivo");
-            cur = cur->sig;
-        }
-    }
+			const char *nombre = (const char*) sqlite3_column_text(stmt, 1);
+			const char *mail = (const char*) sqlite3_column_text(stmt, 2);
+			const char *tlf = (const char*) sqlite3_column_text(stmt, 3);
+			const char *fecha = (const char*) sqlite3_column_text(stmt, 6);
 
-    // 4. liberar la memoria dinámica
-    liberar_lista(&lista);  // ← free aquí
+			if (nombre)
+				strncpy(u.nombre, nombre, MAX_NOMBRE - 1);
+			if (mail)
+				strncpy(u.mail, mail, MAX_EMAIL - 1);
+			if (tlf)
+				strncpy(u.tlf, tlf, MAX_TELEFONO - 1);
+			if (fecha)
+				strncpy(u.fecha_reg, fecha, FECHA - 1);
+
+			u.rol = sqlite3_column_int(stmt, 4);
+			u.estado_cuenta = sqlite3_column_int(stmt, 5);
+
+			insertar_usuario(&lista, &u);
+		}
+		sqlite3_finalize(stmt);
+	}
+	sqlite3_close(db);
+
+	//recorrer la lista e imprimir
+	if (lista.tamanio == 0) {
+		printf("No hay usuarios registrados.\n");
+		fflush(stdout);
+
+	} else {
+		printf("Total: %d usuarios\n\n", lista.tamanio);
+		fflush(stdout);
+
+		NodoUsuario *cur = lista.cabeza;
+		while (cur) {
+			printf("ID: %d | Nombre: %s | Mail: %s | Rol: %s | Estado: %s\n",
+					cur->data.id, cur->data.nombre, cur->data.mail,
+					cur->data.rol == 1 ? "Admin" : "Voluntario",
+					cur->data.estado_cuenta == 1 ? "Activo" : "Inactivo");
+			cur = cur->sig;
+		}
+	}
+
+	//liberar la memoria dinámica
+	liberar_lista(&lista);  //
 }
