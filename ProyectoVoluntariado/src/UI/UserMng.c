@@ -195,3 +195,57 @@ int cargarUsuarioPorID(User *usuario) {
 }
 
 
+void listarUsuarios() {
+    printf("\n===== LISTADO DE USUARIOS =====\n");
+
+    // 1. inicializar la lista vacía
+    ListaUsuarios lista;
+    lista.cabeza  = NULL;
+    lista.tamanio = 0;
+
+    // 2. cargar todos los usuarios de la BD en la lista
+    if (sqlite3_open("data/server_data.db", &db) != SQLITE_OK) {
+        printf("No se pudo abrir la base de datos\n");
+        return;
+    }
+
+    const char *sql = "SELECT ID, NOMBRE, MAIL, TLF, ROL, ESTADO_CUENTA, FECHA_REG FROM USUARIO;";
+    sqlite3_stmt *stmt;
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
+        while (sqlite3_step(stmt) == SQLITE_ROW) {
+            User u;
+            u.id           = sqlite3_column_int (stmt, 0);
+            strncpy(u.nombre,    (char*)sqlite3_column_text(stmt, 1), MAX_NOMBRE);
+            strncpy(u.mail,      (char*)sqlite3_column_text(stmt, 2), MAX_EMAIL);
+            strncpy(u.tlf,       (char*)sqlite3_column_text(stmt, 3), MAX_TELEFONO);
+            u.rol          = sqlite3_column_int (stmt, 4);
+            u.estado_cuenta= sqlite3_column_int (stmt, 5);
+            strncpy(u.fecha_reg, (char*)sqlite3_column_text(stmt, 6), FECHA);
+
+            insertar_usuario(&lista, &u);  // ← malloc aquí
+        }
+        sqlite3_finalize(stmt);
+    }
+    sqlite3_close(db);
+
+    // 3. recorrer la lista e imprimir
+    if (lista.tamanio == 0) {
+        printf("No hay usuarios registrados.\n");
+    } else {
+        printf("Total: %d usuarios\n\n", lista.tamanio);
+        NodoUsuario *cur = lista.cabeza;
+        while (cur) {
+            printf("ID: %d | Nombre: %s | Mail: %s | Rol: %s | Estado: %s\n",
+                cur->data.id,
+                cur->data.nombre,
+                cur->data.mail,
+                cur->data.rol == 1 ? "Admin" : "Voluntario",
+                cur->data.estado_cuenta == 1 ? "Activo" : "Inactivo");
+            cur = cur->sig;
+        }
+    }
+
+    // 4. liberar la memoria dinámica
+    liberar_lista(&lista);  // ← free aquí
+}

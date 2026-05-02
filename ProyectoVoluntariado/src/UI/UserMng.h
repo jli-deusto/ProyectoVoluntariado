@@ -18,5 +18,6 @@ void extraerNombre(char usuario[MAX_NOMBRE]);
 void extraerMail(char usuario[MAX_NOMBRE]);
 void extraerTlf(char usuario[MAX_NOMBRE]);
 void extraerClave(char usuario[MAX_NOMBRE]);
+void listarUsuarios();
 
 #endif /* UI_USERMNG_H_ */
