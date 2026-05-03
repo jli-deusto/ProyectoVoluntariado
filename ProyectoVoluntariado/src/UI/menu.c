@@ -274,6 +274,12 @@ void menu_admin() {
     MostrarMenu(header, opciones, funciones, num_opciones, num_funciones);
 }
 
+static int listarUsuarios_wrapper(User *u) {
+    (void)u;
+    listarUsuarios();
+    return 1;
+}
+
 void gestion_usuarios() {
 
     char header[] = "Gestión de Usuarios";
@@ -287,7 +293,7 @@ void gestion_usuarios() {
     };
     User usuario;
     MenuCallbackUser funciones[] = {
-    	listarUsuarios,
+    	listarUsuarios_wrapper,
         crearUsuario,   // 1
         modificarUsuario,           // 2 -> TBD
         eliminarUsuario,           // 3 -> TBD
