@@ -10,13 +10,20 @@
 #include <unistd.h>
 #include "UI/logIn.h"
 #include "server/persistencia/db_connector.h"
+#include "server/logs/logger.h"
 #include "Libs/sqlite/sqlite3.h"
 
 int main_server();
 
 int main() {
+
+	char cwd[256];
+	getcwd(cwd, sizeof(cwd));
+	printf("Directorio de trabajo: %s\n", cwd);
+
     //int opcion;
     main_server(); //carga de datos
+    logger_init();
     while(1){
     	bienvenida(); // Pagina inicial; datos admin
     }

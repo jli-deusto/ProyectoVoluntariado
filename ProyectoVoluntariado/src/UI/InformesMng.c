@@ -77,8 +77,136 @@ void estadisticas_centro() {
 
     printf("\n===== ESTADÍSTICAS DEL CENTRO =====\n");
 
-    printf("// TBD: horas trabajadas, residuos recogidos, animales rescatados.\n");
-    printf("// Disponible próximamente !! :D");
+    if (db == NULL) {
+       printf("Error: no hay conexión con la base de datos.\n");
+       return;
+    }
+
+    sqlite3_stmt *stmt;
+
+    {
+    	const char *sql = "SELECT COUNT(*) FROM USUARIO;";
+    	if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
+    		if (sqlite3_step(stmt) == SQLITE_ROW)
+    			printf("Usuarios registrados:        %d\n", sqlite3_column_int(stmt, 0));
+    		sqlite3_finalize(stmt);
+    	}
+    }
+
+
+	{
+		const char *sql = "SELECT COUNT(*) FROM USUARIO WHERE ESTADO_CUENTA = 1;";
+		if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
+			if (sqlite3_step(stmt) == SQLITE_ROW)
+				printf("Usuarios activos:            %d\n", sqlite3_column_int(stmt, 0));
+			sqlite3_finalize(stmt);
+		}
+	}
+
+
+	{
+		const char *sql = "SELECT COUNT(*) FROM ACTIVIDAD;";
+		if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
+			if (sqlite3_step(stmt) == SQLITE_ROW)
+				printf("Actividades en el sistema:   %d\n", sqlite3_column_int(stmt, 0));
+			sqlite3_finalize(stmt);
+		}
+	}
+
+
+	{
+		const char *sql =
+			"SELECT TIPO, COUNT(*) AS TOTAL "
+			"FROM ACTIVIDAD "
+			"GROUP BY TIPO "
+			"ORDER BY TOTAL DESC;";
+
+		if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
+			printf("\nActividades por tipo:\n");
+			while (sqlite3_step(stmt) == SQLITE_ROW) {
+				const unsigned char *tipo = sqlite3_column_text(stmt, 0);
+				int total = sqlite3_column_int(stmt, 1);
+				printf("  %-20s %d\n", tipo ? (const char *)tipo : "sin tipo", total);
+			}
+
+			sqlite3_finalize(stmt);
+		}
+	}
+
+
+	{
+		const char *sql = "SELECT COUNT(*) FROM RESERVA WHERE ESTADO_RESERVA = 1;";
+		if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
+			if (sqlite3_step(stmt) == SQLITE_ROW)
+				printf("\nReservas aprobadas:          %d\n", sqlite3_column_int(stmt, 0));
+			sqlite3_finalize(stmt);
+		}
+	}
+
+
+	{
+		const char *sql = "SELECT COUNT(*) FROM RESERVA WHERE ESTADO_RESERVA = 0;";
+		if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
+			if (sqlite3_step(stmt) == SQLITE_ROW)
+				printf("Reservas canceladas:         %d\n", sqlite3_column_int(stmt, 0));
+			sqlite3_finalize(stmt);
+		}
+	}
+
+
+	{
+		const char *sql =
+			"SELECT a.TITULO, COUNT(r.ID) AS TOTAL "
+			"FROM ACTIVIDAD a "
+			"LEFT JOIN RESERVA r ON a.ID = r.ID_ACTIVIDAD AND r.ESTADO_RESERVA = 1 "
+			"GROUP BY a.ID "
+			"ORDER BY TOTAL DESC "
+			"LIMIT 1;";
+
+		if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
+			if (sqlite3_step(stmt) == SQLITE_ROW) {
+				const unsigned char *titulo = sqlite3_column_text(stmt, 0);
+				int total = sqlite3_column_int(stmt, 1);
+				printf("\nActividad más popular:       %s (%d reservas)\n",
+						titulo ? (const char *)titulo : "N/A", total);
+			}
+			sqlite3_finalize(stmt);
+		}
+	}
+
+
+	{
+		const char *sql =
+			"SELECT u.NOMBRE, COUNT(r.ID) AS PARTICIPACIONES "
+			"FROM USUARIO u "
+			"JOIN RESERVA r ON u.ID = r.ID_USUARIO "
+			"WHERE u.ROL = '0' AND r.ESTADO_RESERVA = 1 "
+			"GROUP BY u.ID "
+			"ORDER BY PARTICIPACIONES DESC "
+			"LIMIT 1;";
+
+		if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
+			if (sqlite3_step(stmt) == SQLITE_ROW) {
+				const unsigned char *nombre = sqlite3_column_text(stmt, 0);
+				int partic = sqlite3_column_int(stmt, 1);
+				printf("Voluntario más activo:       %s (%d actividades)\n",
+						nombre ? (const char *)nombre : "N/A", partic);
+			}
+			sqlite3_finalize(stmt);
+		}
+	}
+
+
+	{
+		const char *sql = "SELECT COUNT(*) FROM NOTICIA;";
+		if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
+			if (sqlite3_step(stmt) == SQLITE_ROW)
+				printf("Noticias publicadas:         %d\n", sqlite3_column_int(stmt, 0));
+			sqlite3_finalize(stmt);
+		}
+	}
+
+        printf("=====================================\n");
 }
 
 void participacion_voluntariado() {
