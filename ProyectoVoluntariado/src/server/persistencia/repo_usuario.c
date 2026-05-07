@@ -191,3 +191,33 @@ int repo_usuario_get(sqlite3 *db, int id, User *u) {
 	sqlite3_finalize(stmt);
 	return 0;
 }
+
+int repo_usuario_get_by_mail(sqlite3 *db, const char *mail, User *u) {
+    sqlite3_stmt *stmt;
+    const char *sql =
+        "SELECT ID, NOMBRE, MAIL, TLF, PW, ROL, ESTADO_CUENTA, FECHA_REG "
+        "FROM USUARIO WHERE MAIL = ?;";
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK)
+        return 0;
+
+    sqlite3_bind_text(stmt, 1, mail, -1, SQLITE_STATIC);
+
+    if (sqlite3_step(stmt) != SQLITE_ROW) {
+        sqlite3_finalize(stmt);
+        return 0;
+    }
+
+    u->id = sqlite3_column_int(stmt, 0);
+    strncpy(u->nombre,   (char*)sqlite3_column_text(stmt, 1), MAX_NOMBRE - 1);
+    strncpy(u->mail,     (char*)sqlite3_column_text(stmt, 2), MAX_EMAIL - 1);
+    const char *tlf = (char*)sqlite3_column_text(stmt, 3);
+    if (tlf) strncpy(u->tlf, tlf, MAX_TELEFONO - 1);
+    strncpy(u->pw,       (char*)sqlite3_column_text(stmt, 4), MAX_PASSWORD - 1);
+    u->rol           = sqlite3_column_int(stmt, 5);
+    u->estado_cuenta = sqlite3_column_int(stmt, 6);
+    strncpy(u->fecha_reg,(char*)sqlite3_column_text(stmt, 7), FECHA - 1);
+
+    sqlite3_finalize(stmt);
+    return 1;
+}

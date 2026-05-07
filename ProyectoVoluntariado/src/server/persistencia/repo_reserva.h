@@ -12,5 +12,6 @@
 #include "../../Libs/sqlite/sqlite3.h"
 
 void repo_reserva_insert(sqlite3 *db, Reserva *r);
+int  repo_reserva_delete(sqlite3 *db, int id_reserva);
 
 #endif /* PERSISTENCIA_REPO_RESERVA_H_ */

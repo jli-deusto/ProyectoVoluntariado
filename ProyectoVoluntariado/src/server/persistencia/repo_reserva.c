@@ -30,3 +30,18 @@ void repo_reserva_insert(sqlite3 *db, Reserva *r) {
 
     sqlite3_finalize(stmt);
 }//
+
+int repo_reserva_delete(sqlite3 *db, int id_reserva) {
+    sqlite3_stmt *stmt;
+    const char *sql = "DELETE FROM RESERVA WHERE ID = ?;";
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK)
+        return 0;
+
+    sqlite3_bind_int(stmt, 1, id_reserva);
+
+    int rc = sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
+
+    return (rc == SQLITE_DONE && sqlite3_changes(db) > 0);
+}

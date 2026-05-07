@@ -7,6 +7,7 @@
 
 #include "persistencia/db_connector.h"
 #include "persistencia/db_init.h"
+#include "comms/coms_servidor.h"
 #include <stdio.h>
 
 
@@ -43,7 +44,7 @@ int main_server() {
     debug_contadores(db);
 
 
-    //iniciar_servidor();
+    iniciar_servidor();
 
 //    endSession();
 
