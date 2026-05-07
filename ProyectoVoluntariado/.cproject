@@ -46,7 +46,6 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="config"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="database"/>
 						<entry excluding="shared|ProyectoVoluntariado.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry excluding="server" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src/shared"/>
@@ -95,7 +94,6 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="config"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="database"/>
 						<entry excluding="shared" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry excluding="server" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src/shared"/>
