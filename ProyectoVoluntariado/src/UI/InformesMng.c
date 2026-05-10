@@ -252,8 +252,51 @@ void participacion_voluntariado() {
 
 void registro_incidencias() {
     printf("\n===== REGISTRO DE INCIDENCIAS MEDIOAMBIENTALES =====\n");
-    printf("// TBD: implementar tabla INCIDENCIA.\n");
-    printf("// Disponible próximamente !! :D");
+
+    if (db == NULL) {
+        printf("Error: no hay conexión con la base de datos.\n");
+        return;
+    }
+
+    const char *sql =
+        "SELECT i.ID, i.DESCRIPCION, i.UBICACION, i.FECHA_REPORTE, i.HORA_REPORTE, u.NOMBRE "
+        "FROM INCIDENCIA i "
+        "JOIN USUARIO u ON i.ID_USUARIO = u.ID "
+        "ORDER BY i.FECHA_REPORTE DESC, i.HORA_REPORTE DESC;";
+
+    sqlite3_stmt *stmt;
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
+        printf("Error al preparar consulta: %s\n", sqlite3_errmsg(db));
+        return;
+    }
+
+    int hay_filas = 0;
+
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        hay_filas = 1;
+        int id                      = sqlite3_column_int(stmt, 0);
+        const unsigned char *desc   = sqlite3_column_text(stmt, 1);
+        const unsigned char *ubic   = sqlite3_column_text(stmt, 2);
+        const unsigned char *fecha  = sqlite3_column_text(stmt, 3);
+        const unsigned char *hora   = sqlite3_column_text(stmt, 4);
+        const unsigned char *nombre = sqlite3_column_text(stmt, 5);
+
+        printf("\nIncidencia #%d\n", id);
+        printf("  Reportada por: %s\n", nombre ? (const char *)nombre : "N/A");
+        printf("  Descripción:   %s\n", desc   ? (const char *)desc   : "N/A");
+        printf("  Ubicación:     %s\n", ubic   ? (const char *)ubic   : "N/A");
+        printf("  Fecha:         %s\n", fecha  ? (const char *)fecha  : "N/A");
+        printf("  Hora:          %s\n", hora   ? (const char *)hora   : "N/A");
+    }
+
+    sqlite3_finalize(stmt);
+
+    if (!hay_filas) {
+        printf("\nNo hay incidencias registradas.\n");
+    }
+
+    printf("=====================================================\n");
 }
 
 void mostrar_logs() {

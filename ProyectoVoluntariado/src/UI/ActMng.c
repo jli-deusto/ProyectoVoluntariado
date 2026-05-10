@@ -127,7 +127,6 @@ int crearActividad(Actividad *act) {
         printf("\nError al crear la actividad.\n");
     }
 
-    return sol;
 
     sqlite3_close(db);
 

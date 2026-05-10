@@ -65,6 +65,16 @@ void open_connection() {
 
 							    ")");
 
+		ejecutar_sqlExec(db, "CREATE TABLE IF NOT EXISTS INCIDENCIA ("
+		    "ID INTEGER PRIMARY KEY AUTOINCREMENT,"
+		    "DESCRIPCION TEXT,"
+		    "UBICACION TEXT,"
+		    "FECHA_REPORTE TEXT NOT NULL,"
+		    "HORA_REPORTE TEXT NOT NULL,"
+		    "ID_USUARIO INTEGER NOT NULL,"
+		    "FOREIGN KEY (ID_USUARIO) REFERENCES USUARIO(ID)"
+		    ")");
+
 	}
 }
 

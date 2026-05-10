@@ -18,7 +18,7 @@ int main_admin(){
 	// 1. read admin.conf
 	ConfigAdmin config;
 
-	if(!cargar_configuracion("admin.config", &config)){
+	if(!cargar_configuracion("admin.conf", &config)){
 		printf("Error de carga de configuración \n");
 	} else {
 
