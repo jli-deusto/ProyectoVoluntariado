@@ -221,3 +221,74 @@ int repo_usuario_get_by_mail(sqlite3 *db, const char *mail, User *u) {
     sqlite3_finalize(stmt);
     return 1;
 }
+
+
+
+
+int repo_usuario_get_by_nombre(sqlite3 *db, const char *nombre, User *u) {
+    sqlite3_stmt *stmt;
+    const char *sql =
+        "SELECT ID, NOMBRE, MAIL, TLF, PW, ROL, ESTADO_CUENTA, FECHA_REG "
+        "FROM USUARIO WHERE NOMBRE = ?;";
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK)
+        return 0;
+
+    sqlite3_bind_text(stmt, 1, nombre, -1, SQLITE_STATIC);
+
+    if (sqlite3_step(stmt) != SQLITE_ROW) {
+        sqlite3_finalize(stmt);
+        return 0;
+    }
+
+    u->id = sqlite3_column_int(stmt, 0);
+    strncpy(u->nombre, (char*)sqlite3_column_text(stmt, 1), MAX_NOMBRE - 1);
+    strncpy(u->mail, (char*)sqlite3_column_text(stmt, 2), MAX_EMAIL - 1);
+    const char *tlf = (char*)sqlite3_column_text(stmt, 3);
+    if (tlf) strncpy(u->tlf, tlf, MAX_TELEFONO - 1);
+    strncpy(u->pw, (char*)sqlite3_column_text(stmt, 4), MAX_PASSWORD - 1);
+    u->rol = sqlite3_column_int(stmt, 5);
+    u->estado_cuenta = sqlite3_column_int(stmt, 6);
+    strncpy(u->fecha_reg, (char*)sqlite3_column_text(stmt, 7), FECHA - 1);
+
+    sqlite3_finalize(stmt);
+    return 1;
+}
+
+
+
+
+int repo_usuario_insert_prehashed(sqlite3 *db, User *u) {
+    sqlite3_stmt *stmt;
+
+    const char *sql =
+        "INSERT OR REPLACE INTO USUARIO (NOMBRE, TLF, MAIL, PW, ROL, ESTADO_CUENTA, FECHA_REG) "
+        "VALUES (?, ?, ?, ?, ?, ?, ?);";
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
+        printf("Error preparando INSERT: %s\n", sqlite3_errmsg(db));
+        return 0;
+    }
+
+    sqlite3_bind_text(stmt, 1, u->nombre, -1, SQLITE_STATIC);
+    if (u->tlf[0] == '\0')
+        sqlite3_bind_null(stmt, 2);
+    else
+        sqlite3_bind_text(stmt, 2, u->tlf, -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 3, u->mail,     -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 4, u->pw,       -1, SQLITE_STATIC); /* ya hasheado */
+    sqlite3_bind_int (stmt, 5, u->rol);
+    sqlite3_bind_int (stmt, 6, u->estado_cuenta);
+    sqlite3_bind_text(stmt, 7, u->fecha_reg,-1, SQLITE_STATIC);
+
+    int rc = sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
+
+    if (rc != SQLITE_DONE) {
+        printf("Error SQL en insert prehashed: %s\n", sqlite3_errmsg(db));
+        return 0;
+    }
+    return 1;
+}
+
+

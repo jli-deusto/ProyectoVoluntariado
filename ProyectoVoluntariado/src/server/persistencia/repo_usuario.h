@@ -16,5 +16,7 @@ int repo_usuario_update(sqlite3 *db, User *u);
 int repo_usuario_check(sqlite3 *db, User *u); // comprueba si el usuario esta en la base de datos
 int repo_usuario_get(sqlite3 *db, int id, User *u);
 int repo_usuario_get_by_mail(sqlite3 *db, const char *mail, User *u);
+int repo_usuario_get_by_nombre(sqlite3 *db, const char *nombre, User *u);
+int repo_usuario_insert_prehashed(sqlite3 *db, User *u);
 
 #endif /* PERSISTENCIA_REPO_USUARIO_H_ */
