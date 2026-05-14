@@ -39,6 +39,9 @@ void iniciar_servidor() {
 		return;
 	}
 
+//	int opt = 1;
+//	setsockopt(server_socket, SOL_SOCKET, SO_REUSEADDR, (char*)&opt, sizeof(opt));
+
 	// 3. bind (asociar socket al puerto)
 	struct sockaddr_in server_addr;
 	server_addr.sin_family = AF_INET;
@@ -206,6 +209,24 @@ static void cmd_reservar(SOCKET s, char *params, int usuario_id) {
 
     int id_actividad = atoi(id_str);
 
+    const char *sql_check =
+    		"SELECT COUNT(*) FROM RESERVA WHERE ID_USUARIO=? AND ID_ACTIVIDAD=? AND ESTADO_RESERVA=1;";
+    sqlite3_stmt *stmt; int ya = 0;
+
+    if (sqlite3_prepare_v2(db, sql_check, -1, &stmt, NULL) == SQLITE_OK) {
+		sqlite3_bind_int(stmt, 1, usuario_id);
+		sqlite3_bind_int(stmt, 2, id_actividad);
+		if (sqlite3_step(stmt) == SQLITE_ROW) {
+			ya = sqlite3_column_int(stmt, 0);
+		}
+		sqlite3_finalize(stmt);
+	}
+
+	if (ya > 0) {
+		enviar(s, "ERROR|Ya tienes una reserva activa para esta actividad\n");
+		return;
+	}
+
     Reserva r;
     r.id_usuario     = usuario_id;
     r.id_actividad   = id_actividad;
@@ -217,7 +238,7 @@ static void cmd_reservar(SOCKET s, char *params, int usuario_id) {
              tm_info->tm_mday, tm_info->tm_mon + 1, tm_info->tm_year + 1900);
 
     repo_reserva_insert(db, &r);          // ← sin if, devuelve void
-    enviar(s, "OK|Reserva realizada\n");
+    enviar(s, "OK|Reserva realizada correctamente\n");
 }
 
 // manejar CANCELAR|id_reserva
@@ -239,7 +260,7 @@ static void cmd_cancelar(SOCKET s, char *params) {
 
 // manejar GET_NOTICIAS
 static void cmd_get_noticias(SOCKET s) {
-	const char *sql = "SELECT ID, TITULO, CONTENIDO, FECHA_PUB FROM NOTICIA;";
+	const char *sql = "SELECT ID, TITULO, CONTENIDO, FECHA FROM NOTICIA;";
 
 	sqlite3_stmt *stmt;
 	char buffer[MAX_BUFFER];
@@ -340,6 +361,53 @@ static void cmd_incidencia(SOCKET s, char *params, int usuario_id) {
 
 
 
+static void cmd_get_incidencias(SOCKET s) {
+    const char *sql =
+        "SELECT i.ID, i.DESCRIPCION, i.UBICACION, i.FECHA_REPORTE, i.HORA_REPORTE, u.NOMBRE "
+        "FROM INCIDENCIA i JOIN USUARIO u ON i.ID_USUARIO = u.ID "
+        "ORDER BY i.FECHA_REPORTE DESC, i.HORA_REPORTE DESC;";
+    sqlite3_stmt *stmt; char buffer[MAX_BUFFER]; strcpy(buffer, "OK");
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
+        while (sqlite3_step(stmt) == SQLITE_ROW) {
+            char item[512];
+            snprintf(item, sizeof(item), "|%d,%s,%s,%s,%s,%s",
+                sqlite3_column_int(stmt,0), sqlite3_column_text(stmt,1),
+                sqlite3_column_text(stmt,2), sqlite3_column_text(stmt,3),
+                sqlite3_column_text(stmt,4), sqlite3_column_text(stmt,5));
+            strncat(buffer, item, MAX_BUFFER - strlen(buffer) - 1);
+        }
+        sqlite3_finalize(stmt);
+    }
+    strncat(buffer, "\n", MAX_BUFFER - strlen(buffer) - 1);
+    enviar(s, buffer);
+}
+
+
+static void cmd_get_perfil(SOCKET s, char *params) {
+    char *id_str = strtok(params, "|");
+    if (!id_str) { enviar(s, "ERROR|Parametros incorrectos\n"); return; }
+    User u;
+    if (!repo_usuario_get(db, atoi(id_str), &u)) { enviar(s, "ERROR|Usuario no encontrado\n"); return; }
+    char resp[256];
+    snprintf(resp, sizeof(resp), "OK|%s|%s|%s\n", u.nombre, u.mail, u.tlf[0] ? u.tlf : "N/A");
+    enviar(s, resp);
+}
+
+
+static void cmd_editar_perfil(SOCKET s, char *params) {
+    char *id_str    = strtok(params, "|");
+    char *nuevo_tlf = strtok(NULL,   "|");
+    char *nuevo_pw  = strtok(NULL,   "|");
+    if (!id_str || !nuevo_tlf || !nuevo_pw) { enviar(s, "ERROR|Parametros incorrectos\n"); return; }
+    User u;
+    if (!repo_usuario_get(db, atoi(id_str), &u)) { enviar(s, "ERROR|Usuario no encontrado\n"); return; }
+    strncpy(u.tlf, nuevo_tlf, MAX_TELEFONO - 1);
+    if (strlen(nuevo_pw) > 0) strncpy(u.pw, nuevo_pw, MAX_PASSWORD - 1);
+    if (repo_usuario_update(db, &u)) enviar(s, "OK|Perfil actualizado correctamente\n");
+    else enviar(s, "ERROR|No se pudo actualizar el perfil\n");
+}
+
+
 // bucle principal que atiende a un cliente
 void atender_cliente(SOCKET client_socket) {
 	char buffer[MAX_BUFFER];
@@ -363,26 +431,31 @@ void atender_cliente(SOCKET client_socket) {
 
 		if (!comando) continue;
 
-		if(strcmp(comando, "LOGIN")== 0)
+		if (strcmp(comando, "LOGIN") == 0)
 			cmd_login(client_socket, params, &usuario_id, &rol);
-		else if (strcmp(comando, "REGISTRO")== 0)
+		else if (strcmp(comando, "REGISTRO") == 0)
 			cmd_registro(client_socket, params);
-		else if (strcmp(comando, "GET_ACTS")== 0)
+		else if (strcmp(comando, "GET_ACTS") == 0)
 			cmd_get_acts(client_socket);
-		else if (strcmp(comando, "RESERVAR")== 0)
+		else if (strcmp(comando, "RESERVAR") == 0)
 			cmd_reservar(client_socket, params, usuario_id);
-		else if (strcmp(comando, "CANCELAR")== 0)
+		else if (strcmp(comando, "CANCELAR") == 0)
 			cmd_cancelar(client_socket, params);
-		else if (strcmp(comando, "GET_NOTICIAS")== 0)
+		else if (strcmp(comando, "GET_NOTICIAS") == 0)
 			cmd_get_noticias(client_socket);
-		else if (strcmp(comando, "GET_MIS_RESERVAS")== 0)
+		else if (strcmp(comando, "GET_MIS_RESERVAS") == 0)
 			cmd_get_mis_reservas(client_socket, params);
-		else if (strcmp(comando, "INCIDENCIA")== 0)
+		else if (strcmp(comando, "INCIDENCIA") == 0)
 			cmd_incidencia(client_socket, params, usuario_id);
-		else if (strcmp(comando, "LOGOUT")== 0) {
+		else if (strcmp(comando, "GET_INCIDENCIAS") == 0)
+			cmd_get_incidencias(client_socket);
+		else if (strcmp(comando, "GET_PERFIL") == 0)
+			cmd_get_perfil(client_socket, params);
+		else if (strcmp(comando, "EDITAR_PERFIL") == 0)
+			cmd_editar_perfil(client_socket, params);
+		else if (strcmp(comando, "LOGOUT") == 0) {
 			enviar(client_socket, "OK|Hasta luego\n");
 			break;
-		} else
-			enviar(client_socket, "ERROR|Comando desconocido\n");
+		} else enviar(client_socket, "ERROR|Comando desconocido\n");
 	}
 }
