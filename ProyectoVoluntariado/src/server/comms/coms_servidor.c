@@ -19,9 +19,10 @@
 #include "server/persistencia/repo_incidencia.h"
 #include "server/seguridad/contrasena.h"
 #include "server/persistencia/db_connector.h"
+#include "server/logs/logger.h"
 
 #define MAX_BUFFER 2048
-#define PUERTO 8080
+extern int puerto_conf;
 
 void iniciar_servidor() {
 	// 1. inicializar Winsock
@@ -46,7 +47,7 @@ void iniciar_servidor() {
 	struct sockaddr_in server_addr;
 	server_addr.sin_family = AF_INET;
 	server_addr.sin_addr.s_addr = INADDR_ANY;
-	server_addr.sin_port = htons(PUERTO);
+	server_addr.sin_port = htons(puerto_conf);
 
 	if (bind(server_socket, (struct sockaddr*) &server_addr,
 			sizeof(server_addr)) == SOCKET_ERROR) {
@@ -58,7 +59,7 @@ void iniciar_servidor() {
 
 	// 4. listen
 	listen(server_socket, 5);
-	printf("[SERVIDOR] Escuchando en puerto %d...\n", PUERTO);
+	printf("[SERVIDOR] Escuchando en puerto %d...\n", puerto_conf);
 	fflush(stdout);
 
 	// 5. bucle principal (aceptamos un cliente a la vez)
@@ -71,7 +72,7 @@ void iniciar_servidor() {
 		if (client_socket == INVALID_SOCKET) continue;
 
 		printf("[SERVIDOR] Cliente conectado\n");
-		atender_cliente(client_socket);  // función que implementarás después
+		atender_cliente(client_socket);
 
 		closesocket(client_socket);
 		printf("[SERVIDOR] Cliente desconectado\n");
@@ -105,6 +106,7 @@ static void cmd_login(SOCKET s, char *params, int *usuario_id, int *rol) {
 	}
 
 	if (strcmp(u.pw, hash_pw) != 0) {
+		log_servidor(LOG_WARN, "Login fallido: contrasena incorrecta");
 		enviar(s, "ERROR|Contrasena incorrecta\n");
 		return;
 	}
@@ -114,6 +116,7 @@ static void cmd_login(SOCKET s, char *params, int *usuario_id, int *rol) {
 
 	char respuesta[64];
 	snprintf(respuesta, sizeof(respuesta), "OK|%d|%d\n", u.id, u.rol);
+	log_servidor(LOG_INFO, "Login correcto");
 	enviar(s, respuesta);
 }
 
@@ -156,6 +159,7 @@ static void cmd_registro(SOCKET s, char *params) {
     nuevo.estado_cuenta = 1;
 
     if (repo_usuario_insert_prehashed(db, &nuevo)) {
+    	log_servidor(LOG_INFO, "Nuevo usuario registrado");
         enviar(s, "OK|Usuario registrado correctamente\n");
     } else {
         enviar(s, "ERROR|No se pudo registrar el usuario\n");
@@ -239,6 +243,7 @@ static void cmd_reservar(SOCKET s, char *params, int usuario_id) {
              tm_info->tm_mday, tm_info->tm_mon + 1, tm_info->tm_year + 1900);
 
     repo_reserva_insert(db, &r);          // ← sin if, devuelve void
+    log_servidor(LOG_INFO, "Reserva realizada");
     enviar(s, "OK|Reserva realizada correctamente\n");
 }
 
@@ -253,6 +258,7 @@ static void cmd_cancelar(SOCKET s, char *params) {
 	int id_reserva = atoi(id_str);
 
 	if (repo_reserva_delete(db, id_reserva)) {
+		log_servidor(LOG_INFO, "Reserva cancelada");
 		enviar(s, "OK|Reserva cancelada\n");
 	} else {
 		enviar(s, "ERROR|No se pudo cancelar\n");
@@ -354,6 +360,7 @@ static void cmd_incidencia(SOCKET s, char *params, int usuario_id) {
              tm_info->tm_hour, tm_info->tm_min);
 
     if (repo_incidencia_insert(db, &inc)) {
+    	log_servidor(LOG_INFO, "Incidencia registrada");
         enviar(s, "OK|Incidencia registrada correctamente\n");
     } else {
         enviar(s, "ERROR|No se pudo registrar la incidencia\n");
@@ -411,6 +418,7 @@ static void cmd_editar_perfil(SOCKET s, char *params) {
 
 // bucle principal que atiende a un cliente
 void atender_cliente(SOCKET client_socket) {
+	log_servidor(LOG_INFO, "Cliente conectado");
 	char buffer[MAX_BUFFER];
 	int usuario_id = -1;   // -1 = no autenticado
 	int rol = -1;
@@ -459,4 +467,5 @@ void atender_cliente(SOCKET client_socket) {
 			break;
 		} else enviar(client_socket, "ERROR|Comando desconocido\n");
 	}
+	 log_servidor(LOG_INFO, "Cliente desconectado");
 }
