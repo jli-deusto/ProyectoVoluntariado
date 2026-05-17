@@ -237,11 +237,21 @@ void menu_configuracion_sistema() {
 
     MostrarMenu(header, opciones, funciones, size, size);
 }
+
 void menu_admin() {
 
     if (!cargar_configuracion("data/admin.conf", &config)) {
         printf("No se pudo leer admin.conf\n");
         return;
+    }
+
+    if (db == NULL) {
+    	open_connection();
+    }
+
+    if (db == NULL) {
+    	printf("ERROR: No se pudo abrir la base de datos.\n");
+    	return;
     }
 
     fflush(stdout);
