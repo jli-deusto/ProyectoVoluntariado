@@ -30,14 +30,12 @@ void bienvenida() {
 
     const char *opciones[] = {
         "Iniciar sesión",
-        "Registrarse",
         "Salir del sistema"
     };
 
     MenuCallback funciones[] = {
         inicio_sesion,   // 1
-        registro,        // 2
-        log_out          // 3
+        log_out          // 2
     };
 
     int num_opciones   = sizeof(opciones)  / sizeof(opciones[0]);

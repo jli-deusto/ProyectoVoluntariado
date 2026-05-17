@@ -26,6 +26,7 @@ int main() {
 
     int opcion;
     scanf("%d", &opcion);
+    while(getchar() != '\n');
 
     if (opcion == 2) {
         main_server();
