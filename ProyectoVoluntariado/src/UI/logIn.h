@@ -11,7 +11,6 @@
 
 void bienvenida();
 void inicio_sesion();
-void registro();
 void log_out();
 
 #endif /* LOGIN_H_ */
