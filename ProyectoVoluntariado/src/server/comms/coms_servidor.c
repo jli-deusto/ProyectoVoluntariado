@@ -39,8 +39,8 @@ void iniciar_servidor() {
 		return;
 	}
 
-//	int opt = 1;
-//	setsockopt(server_socket, SOL_SOCKET, SO_REUSEADDR, (char*)&opt, sizeof(opt));
+	int reuse = 1;
+	setsockopt(server_socket, SOL_SOCKET, SO_REUSEADDR, (char*)&reuse, sizeof(reuse));
 
 	// 3. bind (asociar socket al puerto)
 	struct sockaddr_in server_addr;
@@ -57,8 +57,9 @@ void iniciar_servidor() {
 	}
 
 	// 4. listen
-	listen(server_socket, 1);
+	listen(server_socket, 5);
 	printf("[SERVIDOR] Escuchando en puerto %d...\n", PUERTO);
+	fflush(stdout);
 
 	// 5. bucle principal (aceptamos un cliente a la vez)
 	while (1) {
