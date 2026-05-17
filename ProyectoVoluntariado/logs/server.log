@@ -12,3 +12,33 @@
 [13/05/2026 09:43:43] [INFO ] Sistema iniciado.
 [17/05/2026 17:16:15] [INFO ] Cliente conectado
 [17/05/2026 17:16:26] [INFO ] Cliente desconectado
+[17/05/2026 17:24:46] [INFO ] Cliente conectado
+[17/05/2026 17:27:02] [INFO ] Login correcto
+[17/05/2026 17:31:07] [INFO ] Cliente desconectado
+[17/05/2026 17:31:07] [INFO ] Cliente conectado
+[17/05/2026 17:31:27] [WARN ] Login fallido: contrasena incorrecta
+[17/05/2026 17:34:16] [INFO ] Nuevo usuario registrado
+[17/05/2026 17:34:38] [INFO ] Login correcto
+[17/05/2026 17:35:36] [INFO ] Cliente desconectado
+[17/05/2026 17:35:36] [INFO ] Cliente conectado
+[17/05/2026 17:35:40] [INFO ] Cliente desconectado
+[17/05/2026 17:36:08] [INFO ] Cliente conectado
+[17/05/2026 17:36:23] [INFO ] Login correcto
+[17/05/2026 17:38:23] [INFO ] Reserva realizada
+[17/05/2026 17:39:20] [INFO ] Cliente desconectado
+[17/05/2026 17:39:20] [INFO ] Cliente conectado
+[17/05/2026 17:39:23] [INFO ] Cliente desconectado
+[17/05/2026 17:48:07] [INFO ] Cliente conectado
+[17/05/2026 17:48:34] [INFO ] Login correcto
+[17/05/2026 17:49:42] [INFO ] Cliente desconectado
+[17/05/2026 17:54:28] [INFO ] Cliente conectado
+[17/05/2026 17:54:39] [INFO ] Login correcto
+[17/05/2026 17:54:53] [INFO ] Reserva realizada
+[17/05/2026 18:03:13] [INFO ] Cliente desconectado
+[17/05/2026 18:04:55] [INFO ] Cliente conectado
+[17/05/2026 18:05:09] [INFO ] Login correcto
+[17/05/2026 18:05:21] [INFO ] Reserva cancelada
+[17/05/2026 18:10:31] [INFO ] Incidencia registrada
+[17/05/2026 18:14:07] [INFO ] Cliente desconectado
+[17/05/2026 18:14:07] [INFO ] Cliente conectado
+[17/05/2026 18:14:30] [INFO ] Cliente desconectado
